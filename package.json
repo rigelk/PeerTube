@@ -63,7 +63,7 @@
     "create-torrent": "^3.24.5",
     "express": "^4.12.4",
     "express-oauth-server": "^2.0.0",
-    "express-validator": "^4.1.1",
+    "express-validator": "^5.0.0",
     "fluent-ffmpeg": "^2.1.0",
     "js-yaml": "^3.5.4",
     "jsonld": "^0.5.12",
