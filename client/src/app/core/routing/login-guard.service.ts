@@ -4,7 +4,8 @@ import {
   CanActivateChild,
   RouterStateSnapshot,
   CanActivate,
-  Router
+  Router,
+  NavigationExtras
 } from '@angular/router'
 
 import { AuthService } from '../auth/auth.service'
@@ -17,14 +18,18 @@ export class LoginGuard implements CanActivate, CanActivateChild {
     private auth: AuthService
   ) {}
 
-  canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this.auth.isLoggedIn() === true) return true
 
+    // Store the attempted URL for redirecting
+    this.auth.redirectUrl = state.url
+
+    // Navigate to the login page with extras
     this.router.navigate([ '/login' ])
     return false
   }
 
-  canActivateChild (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivateChild (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     return this.canActivate(route, state)
   }
 }

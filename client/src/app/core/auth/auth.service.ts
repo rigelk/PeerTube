@@ -28,6 +28,7 @@ type UserLoginWithUserInformation = UserLoginWithUsername & User
 
 @Injectable()
 export class AuthService {
+  redirectUrl: string;
   private static BASE_CLIENT_URL = environment.apiUrl + '/api/v1/oauth-clients/local'
   private static BASE_TOKEN_URL = environment.apiUrl + '/api/v1/users/token'
   private static BASE_USER_INFORMATION_URL = environment.apiUrl + '/api/v1/users/me'

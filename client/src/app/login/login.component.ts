@@ -18,6 +18,7 @@ export class LoginComponent extends FormReactive implements OnInit {
   @ViewChild('forgotPasswordEmailInput') forgotPasswordEmailInput: ElementRef
 
   error: string = null
+  redirectUrl: string = '/videos/list'
 
   form: FormGroup
   formErrors = {
@@ -54,6 +55,8 @@ export class LoginComponent extends FormReactive implements OnInit {
   }
 
   ngOnInit () {
+    this.redirectUrl = this.authService.redirectUrl || '/videos/list'
+    // console.log("you come from "+this.redirectUrl)
     this.buildForm()
   }
 
@@ -63,7 +66,7 @@ export class LoginComponent extends FormReactive implements OnInit {
     const { username, password } = this.form.value
 
     this.authService.login(username, password).subscribe(
-      () => this.router.navigate(['/videos/list']),
+      () => this.router.navigate([this.redirectUrl]),
 
       err => this.error = err.message
     )
