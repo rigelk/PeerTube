@@ -14,7 +14,7 @@ pipeline {
     }
     stage('Dependencies') {
       steps {
-        sh 'git config --user core.logallrefupdates false'
+        sh 'git config core.logallrefupdates false'
         sh 'yarn install'
       }
     }
