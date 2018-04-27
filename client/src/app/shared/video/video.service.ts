@@ -157,14 +157,17 @@ export class VideoService {
     const feeds = [
       {
         label: 'rss 2.0',
+        mime_type: 'application/rss+xml',
         url: VideoService.BASE_FEEDS_URL + FeedFormat.RSS.toLowerCase()
       },
       {
         label: 'atom 1.0',
+        mime_type: 'application/atom+xml',
         url: VideoService.BASE_FEEDS_URL + FeedFormat.ATOM.toLowerCase()
       },
       {
         label: 'json 1.0',
+        mime_type: 'application/json',
         url: VideoService.BASE_FEEDS_URL + FeedFormat.JSON.toLowerCase()
       }
     ]

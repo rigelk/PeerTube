@@ -7,6 +7,7 @@ import { AuthService } from '../../core/auth'
 import { AbstractVideoList } from '../../shared/video/abstract-video-list'
 import { VideoSortField } from '../../shared/video/sort-field.type'
 import { VideoService } from '../../shared/video/video.service'
+import { LinkService, LinkDefinition } from '@app/shared/misc/link.service'
 
 @Component({
   selector: 'my-videos-recently-added',
@@ -23,7 +24,8 @@ export class VideoRecentlyAddedComponent extends AbstractVideoList implements On
                protected location: Location,
                protected notificationsService: NotificationsService,
                protected authService: AuthService,
-               private videoService: VideoService) {
+               private videoService: VideoService,
+               private linkService: LinkService) {
     super()
   }
 
@@ -45,5 +47,13 @@ export class VideoRecentlyAddedComponent extends AbstractVideoList implements On
 
   generateSyndicationList () {
     this.syndicationItems = this.videoService.getVideoFeedUrls(this.sort)
+    this.syndicationItems.forEach(element => {
+      this.linkService.updateTag({
+        rel: 'alternate',
+        type: element.mime_type,
+        title: `feed for recently added videos (${element.label})`,
+        href: element.url
+      } as LinkDefinition)
+    })
   }
 }

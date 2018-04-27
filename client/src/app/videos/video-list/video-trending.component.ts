@@ -7,6 +7,7 @@ import { AuthService } from '../../core/auth'
 import { AbstractVideoList } from '../../shared/video/abstract-video-list'
 import { VideoSortField } from '../../shared/video/sort-field.type'
 import { VideoService } from '../../shared/video/video.service'
+import { LinkService, LinkDefinition } from '@app/shared/misc/link.service'
 
 @Component({
   selector: 'my-videos-trending',
@@ -23,7 +24,8 @@ export class VideoTrendingComponent extends AbstractVideoList implements OnInit,
                protected notificationsService: NotificationsService,
                protected authService: AuthService,
                protected location: Location,
-               private videoService: VideoService) {
+               private videoService: VideoService,
+               private linkService: LinkService) {
     super()
   }
 
@@ -44,5 +46,13 @@ export class VideoTrendingComponent extends AbstractVideoList implements OnInit,
 
   generateSyndicationList () {
     this.syndicationItems = this.videoService.getVideoFeedUrls(this.sort)
+    this.syndicationItems.forEach(element => {
+      this.linkService.updateTag({
+        rel: 'alternate',
+        type: element.mime_type,
+        title: `feed for trending videos (${element.label})`,
+        href: element.url
+      } as LinkDefinition)
+    })
   }
 }

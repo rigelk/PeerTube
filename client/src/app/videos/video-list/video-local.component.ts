@@ -8,6 +8,7 @@ import { AbstractVideoList } from '../../shared/video/abstract-video-list'
 import { VideoSortField } from '../../shared/video/sort-field.type'
 import { VideoService } from '../../shared/video/video.service'
 import { VideoFilter } from '../../../../../shared/models/videos/video-query.type'
+import { LinkService, LinkDefinition } from '@app/shared/misc/link.service'
 
 @Component({
   selector: 'my-videos-local',
@@ -25,7 +26,8 @@ export class VideoLocalComponent extends AbstractVideoList implements OnInit, On
                protected notificationsService: NotificationsService,
                protected authService: AuthService,
                protected location: Location,
-               private videoService: VideoService) {
+               private videoService: VideoService,
+               private linkService: LinkService) {
     super()
   }
 
@@ -47,5 +49,13 @@ export class VideoLocalComponent extends AbstractVideoList implements OnInit, On
 
   generateSyndicationList () {
     this.syndicationItems = this.videoService.getVideoFeedUrls(this.sort, this.filter)
+    this.syndicationItems.forEach(element => {
+      this.linkService.updateTag({
+        rel: 'alternate',
+        type: element.mime_type,
+        title: `feed for local videos (${element.label})`,
+        href: element.url
+      } as LinkDefinition)
+    })
   }
 }
