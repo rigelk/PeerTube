@@ -8,6 +8,7 @@ import { NotificationsService } from 'angular2-notifications'
 import { Subscription } from 'rxjs'
 import * as videojs from 'video.js'
 import 'videojs-hotkeys'
+import 'videojs-youtube'
 import * as WebTorrent from 'webtorrent'
 import { UserVideoRateType, VideoRateType } from '../../../../../shared'
 import '../../../assets/player/peertube-videojs-plugin'
@@ -20,7 +21,7 @@ import { MarkdownService } from '../shared'
 import { VideoDownloadComponent } from './modal/video-download.component'
 import { VideoReportComponent } from './modal/video-report.component'
 import { VideoShareComponent } from './modal/video-share.component'
-import { getVideojsOptions } from '../../../assets/player/peertube-player'
+import { getVideojsOptions, getYouTubeVideojsOptions } from '../../../assets/player/peertube-player'
 import { ServerService } from '@app/core'
 
 @Component({
@@ -98,11 +99,15 @@ export class VideoWatchComponent implements OnInit, OnDestroy {
         this.player.pause()
       }
 
+      if (routeParams['yt']) {
+        this.onYouTubeVideoFetched(routeParams['yt'])
+      }
+
       const uuid = routeParams['uuid']
       // Video did not change
       if (this.video && this.video.uuid === uuid) return
       // Video did change
-      this.videoService.getVideo(uuid).subscribe(
+      /*this.videoService.getVideo(uuid).subscribe(
         video => {
           const startTime = this.route.snapshot.queryParams.start
           this.onVideoFetched(video, startTime)
@@ -113,7 +118,8 @@ export class VideoWatchComponent implements OnInit, OnDestroy {
           this.videoNotFound = true
           console.error(error)
         }
-      )
+      )*/
+      this.onYouTubeVideoFetched('xjS6SftYQaQ')
     })
   }
 
@@ -369,6 +375,40 @@ export class VideoWatchComponent implements OnInit, OnDestroy {
 
     this.setOpenGraphTags()
     this.checkUserRating()
+  }
+
+  private async onYouTubeVideoFetched (video: string, startTime = 0) {
+    // Re init attributes
+    this.descriptionLoading = false
+    this.completeDescriptionShown = false
+
+    this.updateOtherVideosDisplayed()
+
+    // Flush old player if needed
+    this.flushPlayer()
+
+    // Build video element, because videojs remove it on dispose
+    const playerElementWrapper = this.elementRef.nativeElement.querySelector('#video-element-wrapper')
+    this.playerElement = document.createElement('video')
+    this.playerElement.className = 'video-js vjs-peertube-skin'
+    this.playerElement.setAttribute('playsinline', 'true')
+    playerElementWrapper.appendChild(this.playerElement)
+
+    const videojsOptions = getYouTubeVideojsOptions({
+      id: video,
+      autoplay: this.isAutoplay(),
+      inactivityTimeout: 2500,
+      enableHotkeys: true,
+      peertubeLink: false
+    })
+
+    const self = this
+    this.zone.runOutsideAngular(() => {
+      videojs(this.playerElement, videojsOptions, function () {
+        self.player = this
+        this.on('customError', (event, data) => self.handleError(data.err))
+      })
+    })
   }
 
   private setRating (nextRating) {

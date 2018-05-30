@@ -2,6 +2,7 @@ import { VideoFile } from '../../../../shared/models/videos'
 
 import 'videojs-hotkeys'
 import 'videojs-dock'
+import 'videojs-youtube'
 import './peertube-link-button'
 import './resolution-menu-button'
 import './settings-menu-button'
@@ -42,6 +43,70 @@ function getVideojsOptions (options: {
     },
     controlBar: {
       children: getControlBarChildren(options)
+    }
+  }
+
+  if (options.enableHotkeys === true) {
+    Object.assign(videojsOptions.plugins, {
+      hotkeys: {
+        enableVolumeScroll: false
+      }
+    })
+  }
+
+  return videojsOptions
+}
+
+function getYouTubeVideojsOptions (options: {
+  id: string,
+  autoplay: boolean,
+  enableHotkeys: boolean,
+  inactivityTimeout: number,
+  peertubeLink: boolean
+}) {
+  const videojsOptions = {
+    controls: false,
+    autoplay: true,
+    techOrder: [ 'youtube' ],
+    sources: [
+      {
+        type: 'video/youtube',
+        src: 'https://www.youtube.com/watch?v=' + options.id
+      }
+    ],
+    inactivityTimeout: options.inactivityTimeout,
+    playbackRates: [ 0.5, 1, 1.5, 2 ],
+    plugins: {},
+    forceSSL: true,
+    youtube: {
+      ytControls: 2,
+      showinfo: 0,
+      enablePrivacyEnhancedMode: true
+    },
+    controlBar: {
+      children: {
+        'playToggle': {},
+        'currentTimeDisplay': {},
+        'timeDivider': {},
+        'durationDisplay': {},
+        'liveDisplay': {},
+
+        'flexibleWidthSpacer': {},
+        'progressControl': {},
+
+        'muteToggle': {},
+        'volumeControl': {},
+        'settingsButton': {
+          setup: {
+            maxHeightOffset: 40
+          },
+          entries: [
+            // 'resolutionMenuButton',
+            'playbackRateMenuButton'
+          ]
+        },
+        'fullscreenToggle': {}
+      }
     }
   }
 
@@ -98,4 +163,4 @@ function getControlBarChildren (options: {
   return children
 }
 
-export { getVideojsOptions }
+export { getVideojsOptions, getYouTubeVideojsOptions }

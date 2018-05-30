@@ -107,5 +107,8 @@
     "webtorrent": "^0.100.0",
     "whatwg-fetch": "^2.0.4",
     "zone.js": "~0.8.5"
+  },
+  "dependencies": {
+    "videojs-youtube": "^2.5.0"
   }
 }
