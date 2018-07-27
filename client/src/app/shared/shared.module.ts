@@ -37,14 +37,20 @@ import { I18n } from '@ngx-translate/i18n-polyfill'
 import { FormValidatorService } from '@app/shared/forms/form-validators/form-validator.service'
 import {
   CustomConfigValidatorsService,
-  LoginValidatorsService, ReactiveFileComponent,
+  LoginValidatorsService,
+  ReactiveFileComponent,
   ResetPasswordValidatorsService,
-  UserValidatorsService, VideoAbuseValidatorsService, VideoChannelValidatorsService, VideoCommentValidatorsService, VideoValidatorsService
+  UserValidatorsService,
+  VideoAbuseValidatorsService,
+  VideoChannelValidatorsService,
+  VideoCommentValidatorsService,
+  VideoValidatorsService
 } from '@app/shared/forms'
 import { I18nPrimengCalendarService } from '@app/shared/i18n/i18n-primeng-calendar'
 import { ScreenService } from '@app/shared/misc/screen.service'
 import { VideoCaptionsValidatorsService } from '@app/shared/forms/form-validators/video-captions-validators.service'
 import { VideoCaptionService } from '@app/shared/video-caption'
+import { PeertubeCheckboxComponent } from '@app/shared/forms/peertube-checkbox.component'
 
 @NgModule({
   imports: [
@@ -77,7 +83,8 @@ import { VideoCaptionService } from '@app/shared/video-caption'
     MarkdownTextareaComponent,
     InfiniteScrollerDirective,
     HelpComponent,
-    ReactiveFileComponent
+    ReactiveFileComponent,
+    PeertubeCheckboxComponent
   ],
 
   exports: [
@@ -106,6 +113,7 @@ import { VideoCaptionService } from '@app/shared/video-caption'
     InfiniteScrollerDirective,
     HelpComponent,
     ReactiveFileComponent,
+    PeertubeCheckboxComponent,
 
     NumberFormatterPipe,
     ObjectLengthPipe,

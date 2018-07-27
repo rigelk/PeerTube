@@ -15,6 +15,7 @@ import * as express from 'express'
 import * as morgan from 'morgan'
 import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
+import * as helmet from 'helmet'
 
 process.title = 'peertube'
 
@@ -26,7 +27,7 @@ import { checkMissedConfig, checkFFmpeg, checkConfig, checkActivityPubUrls } fro
 
 // Do not use barrels because we don't want to load all modules here (we need to initialize database first)
 import { logger } from './server/helpers/logger'
-import { API_VERSION, CONFIG, STATIC_PATHS, CACHE } from './server/initializers/constants'
+import { API_VERSION, CONFIG, STATIC_PATHS, CACHE, REMOTE_SCHEME } from './server/initializers/constants'
 
 const missed = checkMissedConfig()
 if (missed.length !== 0) {
@@ -47,6 +48,13 @@ if (errorMessage !== null) {
 
 // Trust our proxy (IP forwarding...)
 app.set('trust proxy', CONFIG.TRUST_PROXY)
+
+// Security middleware
+app.use(helmet({
+  frameguard: {
+    action: 'deny' // we only allow it for /videos/embed, see server/controllers/client.ts
+  }
+}))
 
 // ----------- Database -----------
 
@@ -88,22 +96,11 @@ import { UpdateVideosScheduler } from './server/lib/schedulers/update-videos-sch
 
 // Enable CORS for develop
 if (isTestInstance()) {
-  app.use((req, res, next) => {
-    // These routes have already cors
-    if (
-      req.path.indexOf(STATIC_PATHS.TORRENTS) === -1 &&
-      req.path.indexOf(STATIC_PATHS.WEBSEED) === -1 &&
-      req.path.startsWith('/api/') === false
-    ) {
-      return (cors({
-        origin: '*',
-        exposedHeaders: 'Retry-After',
-        credentials: true
-      }))(req, res, next)
-    }
-
-    return next()
-  })
+  app.use(cors({
+    origin: '*',
+    exposedHeaders: 'Retry-After',
+    credentials: true
+  }))
 }
 
 // For the logger

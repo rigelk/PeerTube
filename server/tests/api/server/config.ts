@@ -5,14 +5,17 @@ import * as chai from 'chai'
 import { About } from '../../../../shared/models/server/about.model'
 import { CustomConfig } from '../../../../shared/models/server/custom-config.model'
 import { deleteCustomConfig, getAbout, killallServers, reRunServer } from '../../utils'
-const expect = chai.expect
-
 import {
-  getConfig,
   flushTests,
+  getConfig,
+  getCustomConfig,
+  registerUser,
   runServer,
-  registerUser, getCustomConfig, setAccessTokensToServers, updateCustomConfig
+  setAccessTokensToServers,
+  updateCustomConfig
 } from '../../utils/index'
+
+const expect = chai.expect
 
 function checkInitialConfig (data: CustomConfig) {
   expect(data.instance.name).to.equal('PeerTube')

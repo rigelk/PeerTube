@@ -269,7 +269,7 @@ class PeerTubePlugin extends Plugin {
       }
 
       // Remote instance is down
-      if (err.message.indexOf('http error from xs param') !== -1) {
+      if (err.message.indexOf('from xs param') !== -1) {
         this.handleError(err)
       }
 
@@ -590,7 +590,7 @@ class PeerTubePlugin extends Plugin {
       this.player.options_.inactivityTimeout = 0
     }
     const enableInactivity = () => {
-      // this.player.options_.inactivityTimeout = saveInactivityTimeout
+      this.player.options_.inactivityTimeout = saveInactivityTimeout
     }
 
     const settingsDialog = this.player.children_.find(c => c.name_ === 'SettingsDialog')

@@ -14,15 +14,19 @@ let config: IConfig = require('config')
 
 // ---------------------------------------------------------------------------
 
-const LAST_MIGRATION_VERSION = 230
+const LAST_MIGRATION_VERSION = 235
 
 // ---------------------------------------------------------------------------
 
 // API version
 const API_VERSION = 'v1'
 
-// Number of results by default for the pagination
-const PAGINATION_COUNT_DEFAULT = 15
+const PAGINATION = {
+  COUNT: {
+    DEFAULT: 15,
+    MAX: 100
+  }
+}
 
 // Sortable columns per schema
 const SORTABLE_COLUMNS = {
@@ -35,7 +39,9 @@ const SORTABLE_COLUMNS = {
   VIDEO_COMMENT_THREADS: [ 'createdAt' ],
   BLACKLISTS: [ 'id', 'name', 'duration', 'views', 'likes', 'dislikes', 'uuid', 'createdAt' ],
   FOLLOWERS: [ 'createdAt' ],
-  FOLLOWING: [ 'createdAt' ]
+  FOLLOWING: [ 'createdAt' ],
+
+  VIDEOS_SEARCH: [ 'match', 'name', 'duration', 'createdAt', 'publishedAt', 'views', 'likes' ]
 }
 
 const OAUTH_LIFETIME = {
@@ -44,9 +50,11 @@ const OAUTH_LIFETIME = {
 }
 
 const ROUTE_CACHE_LIFETIME = {
-  FEEDS: 1000 * 60 * 15, // 15 minutes
+  FEEDS: '15 minutes',
+  ROBOTS: '2 hours',
+  NODEINFO: '10 minutes',
   ACTIVITY_PUB: {
-    VIDEOS: 1000 // 1 second, cache concurrent requests after a broadcast for example
+    VIDEOS: '1 second' // 1 second, cache concurrent requests after a broadcast for example
   }
 }
 
@@ -305,6 +313,11 @@ const VIDEO_RATE_TYPES: { [ id: string ]: VideoRateType } = {
   DISLIKE: 'dislike'
 }
 
+const FFMPEG_RENICE: { [ id: string ]: number } = {
+  THUMBNAIL: 2, // 2 just for don't blocking servers
+  TRANSCODING: 15
+}
+
 const VIDEO_CATEGORIES = {
   1: 'Music',
   2: 'Films',
@@ -429,7 +442,7 @@ const STATIC_DOWNLOAD_PATHS = {
 }
 
 // Cache control
-let STATIC_MAX_AGE = '30d'
+let STATIC_MAX_AGE = '2h'
 
 // Videos thumbnail size
 const THUMBNAILS_SIZE = {
@@ -466,7 +479,12 @@ const ACCEPT_HEADERS = [ 'html', 'application/json' ].concat(ACTIVITY_PUB.POTENT
 
 // ---------------------------------------------------------------------------
 
-const OPENGRAPH_AND_OEMBED_COMMENT = '<!-- open graph and oembed tags -->'
+const CUSTOM_HTML_TAG_COMMENTS = {
+  TITLE: '<!-- title tag -->',
+  DESCRIPTION: '<!-- description tag -->',
+  CUSTOM_CSS: '<!-- custom css tag -->',
+  OPENGRAPH_AND_OEMBED: '<!-- open graph and oembed tags -->'
+}
 
 // ---------------------------------------------------------------------------
 
@@ -528,9 +546,9 @@ export {
   JOB_ATTEMPTS,
   LAST_MIGRATION_VERSION,
   OAUTH_LIFETIME,
-  OPENGRAPH_AND_OEMBED_COMMENT,
+  CUSTOM_HTML_TAG_COMMENTS,
   BROADCAST_CONCURRENCY,
-  PAGINATION_COUNT_DEFAULT,
+  PAGINATION,
   ACTOR_FOLLOW_SCORE,
   PREVIEWS_SIZE,
   REMOTE_SCHEME,
@@ -554,6 +572,7 @@ export {
   VIDEO_RATE_TYPES,
   VIDEO_MIMETYPE_EXT,
   VIDEO_TRANSCODING_FPS,
+  FFMPEG_RENICE,
   JOB_REQUEST_TIMEOUT,
   JOB_REQUEST_TTL,
   USER_PASSWORD_RESET_LIFETIME,
@@ -590,29 +609,34 @@ function buildLanguages () {
 
   const languages: { [ id: string ]: string } = {}
 
-  const signLanguages = [
-    'sgn', // Sign languages (macro language)
-    'ase', // American
-    'sdl', // Arabian
-    'bfi', // British
-    'bzs', // Brazilian
-    'csl', // Chinese
-    'cse', // Czech
-    'dsl', // Danish
-    'fsl', // French
-    'gsg', // German
-    'pks', // Pakistan
-    'jsl', // Japanese
-    'sfs', // South African
-    'swl', // Swedish
-    'rsl' // Russian
-  ]
+  const additionalLanguages = {
+    'sgn': true, // Sign languages (macro language)
+    'ase': true, // American sign language
+    'sdl': true, // Arabian sign language
+    'bfi': true, // British sign language
+    'bzs': true, // Brazilian sign language
+    'csl': true, // Chinese sign language
+    'cse': true, // Czech sign language
+    'dsl': true, // Danish sign language
+    'fsl': true, // French sign language
+    'gsg': true, // German sign language
+    'pks': true, // Pakistan sign language
+    'jsl': true, // Japanese sign language
+    'sfs': true, // South African sign language
+    'swl': true, // Swedish sign language
+    'rsl': true, // Russian sign language: true
+
+    'epo': true, // Esperanto
+    'tlh': true, // Klingon
+    'jbo': true, // Lojban
+    'avk': true // Kotava
+  }
 
   // Only add ISO639-1 languages and some sign languages (ISO639-3)
   iso639
     .filter(l => {
       return (l.iso6391 !== null && l.type === 'living') ||
-        signLanguages.indexOf(l.iso6393) !== -1
+        additionalLanguages[l.iso6393] === true
     })
     .forEach(l => languages[l.iso6391 || l.iso6393] = l.name)
 

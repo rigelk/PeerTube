@@ -16,29 +16,10 @@
   input {
     @include peertube-input-text(100%);
     display: block;
-
-    &[type=checkbox] {
-      @include peertube-checkbox(1px);
-    }
   }
 
   input, select {
     font-size: 15px
-  }
-
-  .form-group-checkbox {
-    display: flex;
-    align-items: center;
-
-    label {
-      font-weight: $font-regular;
-      margin: 0;
-    }
-
-    input {
-      width: 10px;
-      margin-right: 10px;
-    }
   }
 
   .label-tags + span {
@@ -65,11 +46,34 @@
     height: 40px;
     align-items: center;
 
+    a.caption-entry-label {
+      @include disable-default-a-behaviour;
+
+      color: #000;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
     .caption-entry-label {
       font-size: 15px;
       font-weight: bold;
 
       margin-right: 20px;
+      width: 150px;
+    }
+
+    .caption-entry-state {
+      width: 200px;
+
+      &.caption-entry-state-create {
+        color: #39CC0B;
+      }
+
+      &.caption-entry-state-delete {
+        color: #FF0000;
+      }
     }
 
     .caption-entry-delete {
