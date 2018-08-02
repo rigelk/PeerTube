@@ -99,6 +99,8 @@ const videoKeysToKeep = [
   'description',
   'duration',
   'isLocal',
+  'isVideo360',
+  'sphericalMapping',
   'name',
   'thumbnailPath',
   'previewPath',

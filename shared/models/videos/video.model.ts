@@ -30,6 +30,8 @@ export interface Video {
   description: string
   duration: number
   isLocal: boolean
+  isVideo360: boolean
+  sphericalMapping?: SphericalMapping
   name: string
   thumbnailPath: string
   previewPath: string
@@ -76,4 +78,12 @@ export interface VideoDetails extends Video {
   // Not optional in details (unlike in Video)
   waitTranscoding: boolean
   state: VideoConstant<VideoState>
+}
+
+export interface SphericalMapping {
+  side_data_type: 'Spherical Mapping',
+  projection: string,
+  yaw: number,
+  pitch: number,
+  roll: number
 }

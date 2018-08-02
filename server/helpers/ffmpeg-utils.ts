@@ -43,6 +43,32 @@ function getDurationFromVideoFile (path: string) {
   })
 }
 
+async function getSphericalMappingFromVideoFile (path: string) {
+  const videoStream = await getVideoFileStream(path)
+
+  // we deal with the two noticed positions at which the data type can be found
+  let sphericalMapping = (videoStream.side_data_list) ?
+  videoStream.side_data_list.filter(data => data.side_data_type === 'Spherical Mapping') :
+    (videoStream.side_data_type && (videoStream.side_data_type === 'Spherical Mapping')) ?
+    videoStream.projection :
+      undefined
+  if (sphericalMapping !== undefined) {
+    // we assign the object to have a more uniform answer structure
+    sphericalMapping = Object.assign({
+      side_data_type: 'Spherical Mapping',
+      projection: 'equirectangular',
+      yaw: 0,
+      pitch: 0,
+      roll: 0
+    }, sphericalMapping)
+  }
+
+  return {
+    isVideo360: sphericalMapping !== undefined,
+    sphericalMapping
+  }
+}
+
 async function generateImageFromVideoFile (fromPath: string, folder: string, imageName: string, size: { width: number, height: number }) {
   const pendingImageName = 'pending-' + imageName
 
@@ -131,6 +157,7 @@ function transcode (options: TranscodeOptions) {
 export {
   getVideoFileResolution,
   getDurationFromVideoFile,
+  getSphericalMappingFromVideoFile,
   generateImageFromVideoFile,
   transcode,
   getVideoFileFPS,
@@ -246,19 +273,16 @@ namespace audio {
 
 /**
  * Standard profile, with variable bitrate audio and faststart.
- *
- * As for the audio, quality '5' is the highest and ensures 96-112kbps/channel
- * See https://trac.ffmpeg.org/wiki/Encode/AAC#fdk_vbr
  */
 async function standard (_ffmpeg) {
   let _bitrate = audio.bitrate.baseKbitrate
   let localFfmpeg = _ffmpeg
     .format('mp4')
     .videoCodec('libx264')
-    .outputOption('-level 3.1') // 3.1 is the minimal ressource allocation for our highest supported resolution
-    .outputOption('-b_strategy 1') // NOTE: b-strategy 1 - heuristic algorythm, 16 is optimal B-frames for it
-    .outputOption('-bf 16') // NOTE: Why 16: https://github.com/Chocobozzz/PeerTube/pull/774. b-strategy 2 -> B-frames<16
-    .outputOption('-map_metadata -1') // strip all metadata
+    .outputOption('-level 4.1') // 3.1 is the minimal ressource allocation for our highest supported resolution
+    .outputOption('-b_strategy 1') // b-strategy 1 - heuristic algorithm, 16 is optimal B-frames for it
+    .outputOption('-bf 16') // why 16: https://github.com/Chocobozzz/PeerTube/pull/774. b-strategy 2 -> B-frames<16
+    .outputOption('-strict unofficial') // 360 side-data : https://github.com/FFmpeg/FFmpeg/blob/master/libavformat/movenc.c#L2069-L2077
     .outputOption('-movflags faststart')
   const _audio = await audio.get(localFfmpeg)
 
@@ -280,6 +304,8 @@ async function standard (_ffmpeg) {
     return localFfmpeg
       .audioCodec('libfdk_aac')
       .audioQuality(5)
+      /* quality '5' is the highest for this encoder and ensures 96-112kbps/channel
+       * See https://trac.ffmpeg.org/wiki/Encode/AAC#fdk_vbr */
   }
 
   return localFfmpeg.audioBitrate(_bitrate)

@@ -371,6 +371,7 @@ export class VideoWatchComponent implements OnInit, OnDestroy {
     this.playerElement = document.createElement('video')
     this.playerElement.className = 'video-js vjs-peertube-skin'
     this.playerElement.setAttribute('playsinline', 'true')
+    this.playerElement.setAttribute('crossorigin', 'anonymous')
     playerElementWrapper.appendChild(this.playerElement)
 
     const playerCaptions = videoCaptions.map(c => ({
@@ -401,11 +402,17 @@ export class VideoWatchComponent implements OnInit, OnDestroy {
 
     const self = this
     this.zone.runOutsideAngular(async () => {
-      videojs(this.playerElement, videojsOptions, function () {
+      videojs(this.playerElement, videojsOptions, async function () {
         self.player = this
         this.on('customError', (event, data) => self.handleError(data.err))
 
         addContextMenu(self.player, self.video.embedUrl)
+        if (self.video.isVideo360) {
+          const projection = (self.video.sphericalMapping &&
+            self.video.sphericalMapping.projection === 'cubemap') ? '360_CUBE' : '360'
+          await import('videojs-vr')
+            .then(_ => self.player.vr({ projection, debug: true }))
+        }
       })
     })
 

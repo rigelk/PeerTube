@@ -26,7 +26,7 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript'
-import { VideoPrivacy, VideoResolution, VideoState } from '../../../shared'
+import { VideoPrivacy, VideoResolution, VideoState, SphericalMapping } from '../../../shared'
 import { VideoTorrentObject } from '../../../shared/models/activitypub/objects'
 import { Video, VideoDetails, VideoFile } from '../../../shared/models/videos'
 import { VideoFilter } from '../../../shared/models/videos/video-query.type'
@@ -495,6 +495,16 @@ export class VideoModel extends Model<VideoModel> {
   @Is('VideoState', value => throwIfNotValid(value, isVideoStateValid, 'state'))
   @Column
   state: VideoState
+
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  isVideo360: boolean
+
+  @AllowNull(true)
+  @Default(null)
+  @Column(DataType.JSONB)
+  sphericalMapping: SphericalMapping
 
   @CreatedAt
   createdAt: Date
@@ -1206,6 +1216,8 @@ export class VideoModel extends Model<VideoModel> {
       nsfw: this.nsfw,
       description: this.getTruncatedDescription(),
       isLocal: this.isOwned(),
+      isVideo360: this.isVideo360,
+      sphericalMapping: this.sphericalMapping,
       duration: this.duration,
       views: this.views,
       likes: this.likes,

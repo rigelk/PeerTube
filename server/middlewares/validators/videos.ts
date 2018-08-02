@@ -29,7 +29,10 @@ import {
   isVideoSupportValid,
   isVideoTagsValid
 } from '../../helpers/custom-validators/videos'
-import { getDurationFromVideoFile } from '../../helpers/ffmpeg-utils'
+import {
+  getDurationFromVideoFile,
+  getSphericalMappingFromVideoFile
+} from '../../helpers/ffmpeg-utils'
 import { logger } from '../../helpers/logger'
 import { CONSTRAINTS_FIELDS } from '../../initializers'
 import { VideoShareModel } from '../../models/video/video-share'
@@ -82,6 +85,10 @@ const videosAddValidator = getCommonVideoAttributes().concat([
     }
 
     videoFile['duration'] = duration
+
+    const { isVideo360, sphericalMapping } = await getSphericalMappingFromVideoFile(videoFile.path)
+    videoFile['isVideo360'] = isVideo360
+    videoFile['sphericalMapping'] = sphericalMapping
 
     return next()
   }

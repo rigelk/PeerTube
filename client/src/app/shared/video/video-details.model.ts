@@ -18,6 +18,7 @@ export class VideoDetails extends Video implements VideoDetailsServerModel {
   files: VideoFile[]
   account: Account
   commentsEnabled: boolean
+  isVideo360: boolean
 
   waitTranscoding: boolean
   state: VideoConstant<VideoState>
@@ -35,6 +36,8 @@ export class VideoDetails extends Video implements VideoDetailsServerModel {
     this.tags = hash.tags
     this.support = hash.support
     this.commentsEnabled = hash.commentsEnabled
+    this.isVideo360 = hash.isVideo360
+    this.sphericalMapping = hash.sphericalMapping
 
     this.buildLikeAndDislikePercents()
   }

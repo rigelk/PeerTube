@@ -169,6 +169,8 @@ async function addVideo (req: express.Request, res: express.Response) {
     waitTranscoding: videoInfo.waitTranscoding || false,
     state: CONFIG.TRANSCODING.ENABLED ? VideoState.TO_TRANSCODE : VideoState.PUBLISHED,
     nsfw: videoInfo.nsfw || false,
+    isVideo360: videoPhysicalFile['isVideo360'],
+    sphericalMapping: videoPhysicalFile['sphericalMapping'],
     description: videoInfo.description,
     support: videoInfo.support,
     privacy: videoInfo.privacy,
