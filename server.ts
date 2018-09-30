@@ -15,7 +15,9 @@ import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
 import * as helmet from 'helmet'
 import * as useragent from 'useragent'
-import * as anonymize from 'ip-anonymize'
+import * as anonymise from 'ip-anonymize'
+import * as architect from 'architect'
+import { join } from 'path'
 
 process.title = 'peertube'
 
@@ -95,18 +97,49 @@ import { RemoveOldJobsScheduler } from './server/lib/schedulers/remove-old-jobs-
 import { UpdateVideosScheduler } from './server/lib/schedulers/update-videos-scheduler'
 import { YoutubeDlUpdateScheduler } from './server/lib/schedulers/youtube-dl-update-scheduler'
 import { VideosRedundancyScheduler } from './server/lib/schedulers/videos-redundancy-scheduler'
+import { root } from './server/helpers/core-utils'
 
 // ----------- Command line -----------
 
+// ----------- Plugins -----------
+
+const additionalPluginsToActivate = CONFIG.PLUGINS
+
+architect.resolveConfig(
+  [
+    { packagePath: 'pt.core', app: app, logger: logger },
+    'pt.test'
+  ].map((e: string | any) => {
+    return (e.packagePath) ? Object.assign(e, {
+      packagePath: join(root(), 'plugins', e.packagePath)
+    }) : join(root(), 'plugins', e)
+  }),
+  (err, config) => {
+    if (err) throw err
+    const plugins = architect.createApp(config, (err, app) => {
+      if (err) throw err
+
+      // app now contains all registered functions from plugins
+      loadCore()
+    })
+
+    plugins.on('service', (name, service) => {
+      logger.info(`loaded plugin ${name} service`)
+    })
+  }
+)
+
 // ----------- App -----------
 
-// Enable CORS for develop
-if (isTestInstance()) {
-  app.use(cors({
-    origin: '*',
-    exposedHeaders: 'Retry-After',
-    credentials: true
-  }))
+function loadCore () {
+  // Enable CORS for develop
+  if (isTestInstance()) {
+    app.use(cors({
+      origin: '*',
+      exposedHeaders: 'Retry-After',
+      credentials: true
+    }))
+  }
 }
 // For the logger
 morgan.token('remote-addr', req => {
@@ -135,47 +168,48 @@ app.use(advertiseDoNotTrack)
 
 // ----------- Views, routes and static files -----------
 
-// API
-const apiRoute = '/api/' + API_VERSION
-app.use(apiRoute, apiRouter)
+  // ----------- Views, routes and static files -----------
 
-// Services (oembed...)
-app.use('/services', servicesRouter)
+  // API
+  const apiRoute = '/api/' + API_VERSION
+  app.use(apiRoute, apiRouter)
 
-app.use('/', activityPubRouter)
-app.use('/', feedsRouter)
-app.use('/', webfingerRouter)
-app.use('/', trackerRouter)
+  // Services (oembed...)
+  app.use('/services', servicesRouter)
 
-// Static files
-app.use('/', staticRouter)
+  app.use('/', activityPubRouter)
+  app.use('/', feedsRouter)
+  app.use('/', webfingerRouter)
+  app.use('/', trackerRouter)
 
-// Client files, last valid routes!
-app.use('/', clientsRouter)
+  // Static files
+  app.use('/', staticRouter)
 
-// ----------- Errors -----------
+  // Client files, last valid routes!
+  app.use('/', clientsRouter)
 
-// Catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  const err = new Error('Not Found')
-  err['status'] = 404
-  next(err)
-})
+  // ----------- Errors -----------
 
-app.use(function (err, req, res, next) {
-  let error = 'Unknown error.'
-  if (err) {
-    error = err.stack || err.message || err
-  }
+  // Catch 404 and forward to error handler
+  app.use(function (req, res, next) {
+    const err = new Error('Not Found')
+    err['status'] = 404
+    next(err)
+  })
 
-  // Sequelize error
-  const sql = err.parent ? err.parent.sql : undefined
+  app.use(function (err, req, res, next) {
+    let error = 'Unknown error.'
+    if (err) {
+      error = err.stack || err.message || err
+    }
 
-  logger.error('Error in controller.', { err: error, sql })
-  return res.status(err.status || 500).end()
-})
+    // Sequelize error
+    const sql = err.parent ? err.parent.sql : undefined
 
-const server = createWebsocketServer(app)
+    logger.error('Error in controller.', { err: error, sql })
+    return res.status(err.status || 500).end()
+  })
+}
 
 // ----------- Run -----------
 
@@ -213,6 +247,7 @@ async function startApplication () {
   Redis.Instance.init()
 
   // Make server listening
+  const server = createWebsocketServer(app)
   server.listen(port, hostname, () => {
     logger.info('Server listening on %s:%d', hostname, port)
     logger.info('Web server: %s', CONFIG.WEBSERVER.URL)

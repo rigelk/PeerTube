@@ -1,0 +1,12 @@
+{
+    "name": "pt.test",
+    "version": "0.0.1",
+    "private": true,
+    "main" : "app.js",
+    "dependencies": {
+      
+    },
+    "plugin" : {
+      "consumes" : ["core", "logger"]
+    }
+  }

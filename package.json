@@ -81,6 +81,7 @@
     "@types/bluebird": "3.5.21"
   },
   "dependencies": {
+    "architect": "^0.1.13",
     "application-config": "^1.0.1",
     "async": "^2.0.0",
     "async-lock": "^1.1.2",

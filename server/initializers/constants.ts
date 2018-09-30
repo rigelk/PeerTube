@@ -283,7 +283,8 @@ const CONFIG = {
       get USERNAME () { return config.get<string>('services.twitter.username') },
       get WHITELISTED () { return config.get<boolean>('services.twitter.whitelisted') }
     }
-  }
+  },
+  get PLUGINS () { return (config.has('plugins')) ? config.get<any[]>('plugins') : undefined }
 }
 
 // ---------------------------------------------------------------------------

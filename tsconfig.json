@@ -21,11 +21,12 @@
     ]
   },
   "exclude": [
-    "client/node_modules",
-    "node_modules",
-    "dist",
-    "storage",
     "client",
+    "client/node_modules",
+    "dist",
+    "node_modules",
+    "plugins",
+    "storage",
     "test1",
     "test2",
     "test3",
