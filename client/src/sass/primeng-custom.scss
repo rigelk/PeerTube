@@ -28,6 +28,19 @@ p-table {
   tr {
     background-color: var(--mainBackgroundColor) !important;
     height: 46px;
+
+    &.ui-state-highlight {
+      background-color:var(--submenuColor) !important;
+      color:var(--mainForegroundColor) !important;
+    }
+  }
+
+  .ui-table-caption {
+    border: none;
+
+    input {
+      @include peertube-input-text(340px)
+    }
   }
 
   .ui-table-tbody {

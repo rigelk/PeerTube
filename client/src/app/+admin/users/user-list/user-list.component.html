@@ -8,12 +8,25 @@
 </div>
 
 <p-table
+  #dt
+  [globalFilterFields]="['username', 'email']"
   [value]="users" [lazy]="true" [paginator]="true" [totalRecords]="totalRecords" [rows]="rowsPerPage"
   [sortField]="sort.field" [sortOrder]="sort.order" (onLazyLoad)="loadLazy($event)" dataKey="id"
 >
+  <ng-template pTemplate="caption">
+    <div style="text-align: right">
+        <input type="text" class="gloabl-filter"
+               pInputText size="50" placeholder="Global Filter"
+               (input)="dt.filterGlobal($event.target.value, 'contains')"
+               style="width:auto">
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 40px"></th>
+      <th style="width: 40px">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
       <th i18n pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
       <th i18n>Email</th>
       <th i18n>Video quota</th>
@@ -25,11 +38,14 @@
 
   <ng-template pTemplate="body" let-expanded="expanded" let-user>
 
-    <tr [ngClass]="{ banned: user.blocked }">
+    <tr [pSelectableRow]="user" [ngClass]="{ banned: user.blocked }">
       <td>
         <span *ngIf="user.blockedReason" class="expander" [pRowToggler]="user">
           <i [ngClass]="expanded ? 'glyphicon glyphicon-menu-down' : 'glyphicon glyphicon-menu-right'"></i>
         </span>
+      </td>
+      <td>
+        <p-tableCheckbox [value]="user"></p-tableCheckbox>
       </td>
       <td>
         {{ user.username }}
