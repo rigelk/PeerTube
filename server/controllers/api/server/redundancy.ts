@@ -8,6 +8,9 @@ import { logger } from '../../../helpers/logger'
 
 const serverRedundancyRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 serverRedundancyRouter.put('/redundancy/:host',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVER_FOLLOW),

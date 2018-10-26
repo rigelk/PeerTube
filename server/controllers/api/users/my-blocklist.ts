@@ -26,6 +26,9 @@ import { ServerModel } from '../../../models/server/server'
 
 const myBlocklistRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.get('/me/blocklist/accounts',
   authenticate,
   paginationValidator,
@@ -35,18 +38,27 @@ myBlocklistRouter.get('/me/blocklist/accounts',
   asyncMiddleware(listBlockedAccounts)
 )
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.post('/me/blocklist/accounts',
   authenticate,
   asyncMiddleware(blockAccountValidator),
   asyncRetryTransactionMiddleware(blockAccount)
 )
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.delete('/me/blocklist/accounts/:accountName',
   authenticate,
   asyncMiddleware(unblockAccountByAccountValidator),
   asyncRetryTransactionMiddleware(unblockAccount)
 )
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.get('/me/blocklist/servers',
   authenticate,
   paginationValidator,
@@ -56,12 +68,18 @@ myBlocklistRouter.get('/me/blocklist/servers',
   asyncMiddleware(listBlockedServers)
 )
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.post('/me/blocklist/servers',
   authenticate,
   asyncMiddleware(blockServerValidator),
   asyncRetryTransactionMiddleware(blockServer)
 )
 
+/**
+ * @todo write swagger definition
+ */
 myBlocklistRouter.delete('/me/blocklist/servers/:host',
   authenticate,
   asyncMiddleware(unblockServerByAccountValidator),

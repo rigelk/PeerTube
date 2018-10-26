@@ -17,8 +17,56 @@ import {
 import { VideoBlacklistModel } from '../../../models/video/video-blacklist'
 import { sequelizeTypescript } from '../../../initializers'
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     VideoBlacklist:
+ *       properties:
+ *         id:
+ *           type: number
+ *         videoId:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *         name:
+ *           type: string
+ *         uuid:
+ *           type: string
+ *         description:
+ *           type: string
+ *         duration:
+ *           type: number
+ *         views:
+ *           type: number
+ *         likes:
+ *           type: number
+ *         dislikes:
+ *           type: number
+ *         nsfw:
+ *           type: boolean
+ */
+
 const blacklistRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/blacklist":
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoBlacklist
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 blacklistRouter.post('/:videoId/blacklist',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_BLACKLIST),
@@ -26,6 +74,29 @@ blacklistRouter.post('/:videoId/blacklist',
   asyncMiddleware(addVideoToBlacklist)
 )
 
+/**
+ * @swagger
+ *
+ * /videos/blacklist:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoBlacklist
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/VideoBlacklist'
+ */
 blacklistRouter.get('/blacklist',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_BLACKLIST),
@@ -36,6 +107,9 @@ blacklistRouter.get('/blacklist',
   asyncMiddleware(listBlacklist)
 )
 
+/**
+ * @todo write swagger definition
+ */
 blacklistRouter.put('/:videoId/blacklist',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_BLACKLIST),
@@ -43,6 +117,21 @@ blacklistRouter.put('/:videoId/blacklist',
   asyncMiddleware(updateVideoBlacklistController)
 )
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/blacklist":
+ *   delete:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoBlacklist
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 blacklistRouter.delete('/:videoId/blacklist',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_BLACKLIST),

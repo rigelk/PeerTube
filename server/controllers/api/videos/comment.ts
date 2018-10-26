@@ -28,8 +28,66 @@ import { AccountModel } from '../../../models/account/account'
 import { UserModel } from '../../../models/account/user'
 
 const auditLogger = auditLoggerFactory('comments')
+
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     VideoComment:
+ *       properties:
+ *         id:
+ *           type: number
+ *         url:
+ *           type: string
+ *         text:
+ *           type: string
+ *         threadId:
+ *           type: number
+ *         inReplyToCommentId:
+ *           type: number
+ *         videoId:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *         totalReplies:
+ *           type: number
+ *         account:
+ *           $ref: "#/components/schemas/Account"
+ *     VideoCommentThreadTree:
+ *       properties:
+ *         comment:
+ *           $ref: "#/components/schemas/VideoComment"
+ *         children:
+ *           type: array
+ *           items:
+ *             $ref: "#/components/schemas/VideoCommentThreadTree"
+ */
+
 const videoCommentRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/comment-threads":
+ *   get:
+ *     tags:
+ *       - VideoComment
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/CommentThreadResponse"
+ */
 videoCommentRouter.get('/:videoId/comment-threads',
   paginationValidator,
   videoCommentThreadsSortValidator,
@@ -39,22 +97,98 @@ videoCommentRouter.get('/:videoId/comment-threads',
   optionalAuthenticate,
   asyncMiddleware(listVideoThreads)
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}/comment-threads/{threadId}":
+ *   get:
+ *     tags:
+ *       - VideoComment
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *       - $ref: "video-comments.yaml#/parameters/threadId"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/VideoCommentThreadTree"
+ */
 videoCommentRouter.get('/:videoId/comment-threads/:threadId',
   asyncMiddleware(listVideoThreadCommentsValidator),
   optionalAuthenticate,
   asyncMiddleware(listVideoThreadComments)
 )
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/comment-threads":
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoComment
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/CommentThreadPostResponse"
+ */
 videoCommentRouter.post('/:videoId/comment-threads',
   authenticate,
   asyncMiddleware(addVideoCommentThreadValidator),
   asyncRetryTransactionMiddleware(addVideoCommentThread)
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}/comments/{commentId}":
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoComment
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *       - $ref: "video-comments.yaml#/parameters/commentId"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/CommentThreadPostResponse"
+ */
 videoCommentRouter.post('/:videoId/comments/:commentId',
   authenticate,
   asyncMiddleware(addVideoCommentReplyValidator),
   asyncRetryTransactionMiddleware(addVideoCommentReply)
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}/comments/{commentId}":
+ *   delete:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoComment
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *       - $ref: "video-comments.yaml#/parameters/commentId"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 videoCommentRouter.delete('/:videoId/comments/:commentId',
   authenticate,
   asyncMiddleware(removeVideoCommentValidator),

@@ -27,6 +27,9 @@ import { UserRight } from '../../../../shared/models/users'
 
 const serverBlocklistRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.get('/blocklist/accounts',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_ACCOUNTS_BLOCKLIST),
@@ -37,6 +40,9 @@ serverBlocklistRouter.get('/blocklist/accounts',
   asyncMiddleware(listBlockedAccounts)
 )
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.post('/blocklist/accounts',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_ACCOUNTS_BLOCKLIST),
@@ -44,6 +50,9 @@ serverBlocklistRouter.post('/blocklist/accounts',
   asyncRetryTransactionMiddleware(blockAccount)
 )
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.delete('/blocklist/accounts/:accountName',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_ACCOUNTS_BLOCKLIST),
@@ -51,6 +60,9 @@ serverBlocklistRouter.delete('/blocklist/accounts/:accountName',
   asyncRetryTransactionMiddleware(unblockAccount)
 )
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.get('/blocklist/servers',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVERS_BLOCKLIST),
@@ -61,6 +73,9 @@ serverBlocklistRouter.get('/blocklist/servers',
   asyncMiddleware(listBlockedServers)
 )
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.post('/blocklist/servers',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVERS_BLOCKLIST),
@@ -68,6 +83,9 @@ serverBlocklistRouter.post('/blocklist/servers',
   asyncRetryTransactionMiddleware(blockServer)
 )
 
+/**
+ * @todo write swagger definition
+ */
 serverBlocklistRouter.delete('/blocklist/servers/:host',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVERS_BLOCKLIST),

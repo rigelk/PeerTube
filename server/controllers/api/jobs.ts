@@ -15,8 +15,35 @@ import { paginationValidator } from '../../middlewares/validators'
 import { listJobsValidator } from '../../middlewares/validators/jobs'
 import { isArray } from '../../helpers/custom-validators/misc'
 
+/**
+ * @swagger
+ *
+ * definitions:
+ *   Job:
+ *     properties:
+ *       id:
+ *         type: number
+ *       state:
+ *         type: string
+ *         enum: [pending, processing, error, success]
+ *       category:
+ *         type: string
+ *         enum: [transcoding, activitypub-http]
+ *       handlerName:
+ *         type: string
+ *       handlerInputData:
+ *         type: string
+ *       createdAt:
+ *         type: string
+ *       updatedAt:
+ *         type: string
+ */
+
 const jobsRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 jobsRouter.get('/:state',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_JOBS),

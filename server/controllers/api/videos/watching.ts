@@ -6,6 +6,9 @@ import { UserModel } from '../../../models/account/user'
 
 const watchingRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 watchingRouter.put('/:videoId/watching',
   authenticate,
   asyncMiddleware(videoWatchingValidator),

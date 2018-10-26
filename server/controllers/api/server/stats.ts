@@ -11,6 +11,9 @@ import { cacheRoute } from '../../../middlewares/cache'
 
 const statsRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 statsRouter.get('/stats',
   asyncMiddleware(cacheRoute(ROUTE_CACHE_LIFETIME.STATS)),
   asyncMiddleware(getStats)

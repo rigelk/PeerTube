@@ -10,6 +10,21 @@ import { VideoModel } from '../../../models/video/video'
 
 const rateVideoRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/rate":
+ *   put:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoRate
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 rateVideoRouter.put('/:id/rate',
   authenticate,
   asyncMiddleware(videoRateValidator),

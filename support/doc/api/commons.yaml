@@ -3,21 +3,51 @@ parameters:
     name: start
     in: query
     required: false
-    type: number
+    schema:
+      type: number
     description: 'Offset'
   count:
     name: count
     in: query
     required: false
-    type: number
+    schema:
+      type: number
     description: 'Number of items'
   sort:
     name: sort
     in: query
     required: false
-    type: string
+    schema:
+      type: string
     description: 'Sort column (-createdAt for example)'
 
 responses:
   emptySuccess:
     description: 'Successful operation'
+  AddUserResponse:
+    properties:
+      id:
+        type: number
+      uuid:
+        type: string
+  VideoUploadResponse:
+    properties:
+      video:
+        type: object
+        properties:
+          id:
+            type: number
+          uuid:
+            type: string
+  CommentThreadResponse:
+    properties:
+      total:
+        type: number
+      data:
+        type: array
+        items:
+          $ref: "#/components/schemas/VideoComment"
+  CommentThreadPostResponse:
+    properties:
+      comment:
+        $ref: "#/components/schemas/VideoComment"

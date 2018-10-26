@@ -10,6 +10,9 @@ import * as memoizee from 'memoizee'
 
 const overviewsRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 overviewsRouter.get('/videos',
   asyncMiddleware(cacheRoute(ROUTE_CACHE_LIFETIME.OVERVIEWS.VIDEOS)),
   asyncMiddleware(getVideosOverview)

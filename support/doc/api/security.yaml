@@ -1,0 +1,15 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    OAuth2:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://peertube.example.com/api/v1/users/token
+          scopes:
+            user: Grants regular access
+            moderator: Grants access to moderation operations
+            admin: Grants access to admin operations

@@ -43,6 +43,9 @@ const reqVideoFileImport = createReqFiles(
   }
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoImportsRouter.post('/imports',
   authenticate,
   reqVideoFileImport,

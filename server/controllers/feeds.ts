@@ -19,12 +19,86 @@ import { buildNSFWFilter } from '../helpers/express-utils'
 
 const feedsRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /feeds/video-comments.{format}:
+ *   get:
+ *     tags:
+ *       - Feeds
+ *     produces:
+ *       - application/atom+xml
+ *       - application/rss+xml
+ *       - application/json
+ *     parameters:
+ *       - name: format
+ *         in: path
+ *         required: false
+ *         schema:
+ *           type: string
+ *         enum: [ 'xml', 'atom', 'json' ]
+ *         default: 'xml'
+ *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
+ *       - name: format
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *         enum: [ 'xml', 'atom', 'json' ]
+ *         default: 'xml'
+ *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
+ *       - name: videoId
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: 'The id of the video to filter to'
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ */
 feedsRouter.get('/feeds/video-comments.:format',
   asyncMiddleware(cacheRoute(ROUTE_CACHE_LIFETIME.FEEDS)),
   asyncMiddleware(videoCommentsFeedsValidator),
   asyncMiddleware(generateVideoCommentsFeed)
 )
 
+/**
+ * @swagger
+ *
+ * /feeds/videos.{format}:
+ *   get:
+ *     tags:
+ *       - Feeds
+ *     produces:
+ *       - application/atom+xml
+ *       - application/rss+xml
+ *       - application/json
+ *     parameters:
+ *       - name: format
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         enum: [ 'xml', 'atom', 'json']
+ *         default: 'xml'
+ *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
+ *       - name: accountId
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: number
+ *         description: 'The id of the local account to filter to (beware, users IDs and not actors IDs which will return empty feeds'
+ *       - name: accountName
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: 'The name of the local account to filter to'
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ */
 feedsRouter.get('/feeds/videos.:format',
   videosSortValidator,
   setDefaultSort,

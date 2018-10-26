@@ -13,31 +13,109 @@ import { remove, writeJSON } from 'fs-extra'
 import { getVersion } from '../../helpers/utils'
 
 const packageJSON = require('../../../../package.json')
-const configRouter = express.Router()
-
 const auditLogger = auditLoggerFactory('config')
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     ServerConfig:
+ *       properties:
+ *         signup:
+ *           type: object
+ *           properties:
+ *             allowed:
+ *               type: boolean
+ *         transcoding:
+ *           type: object
+ *           properties:
+ *             enabledResolutions:
+ *               type: array
+ *               items:
+ *                 type: number
+ *         avatar:
+ *           type: object
+ *           properties:
+ *             file:
+ *               type: object
+ *               properties:
+ *                 size:
+ *                   type: object
+ *                   properties:
+ *                     max:
+ *                       type: number
+ *             extensions:
+ *               type: array
+ *               items:
+ *                 type: string
+ *         video:
+ *           type: object
+ *           properties:
+ *             file:
+ *               type: object
+ *               properties:
+ *                 extensions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ */
+
+const configRouter = express.Router()
+
+/**
+ * @todo write swagger definition
+ */
 configRouter.get('/about', getAbout)
+
+/**
+ * @swagger
+ *
+ * /config:
+ *   get:
+ *     tags:
+ *       - Config
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ServerConfig'
+ */
 configRouter.get('/',
   asyncMiddleware(getConfig)
 )
 
+/**
+ * @todo write swagger definition
+ */
 configRouter.get('/custom',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_CONFIGURATION),
   asyncMiddleware(getCustomConfig)
 )
+
+/**
+ * @todo write swagger definition
+ */
 configRouter.put('/custom',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_CONFIGURATION),
   asyncMiddleware(customConfigUpdateValidator),
   asyncMiddleware(updateCustomConfig)
 )
+
+/**
+ * @todo write swagger definition
+ */
 configRouter.delete('/custom',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_CONFIGURATION),
   asyncMiddleware(deleteCustomConfig)
 )
+
+// ---------------------------------------------------------------------------
 
 let serverCommit: string
 async function getConfig (req: express.Request, res: express.Response, next: express.NextFunction) {

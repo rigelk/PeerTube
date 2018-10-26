@@ -15,8 +15,60 @@ import { VideoModel } from '../../models/video/video'
 import { buildNSFWFilter, isUserAbleToSearchRemoteURI } from '../../helpers/express-utils'
 import { VideoChannelModel } from '../../models/video/video-channel'
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     Actor:
+ *       properties:
+ *         id:
+ *           type: number
+ *         uuid:
+ *           type: string
+ *         url:
+ *           type: string
+ *         name:
+ *           type: string
+ *         host:
+ *           type: string
+ *         followingCount:
+ *           type: number
+ *         followersCount:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *         avatar:
+ *           $ref: "#/components/schemas/Avatar"
+ *     Account:
+ *       allOf:
+ *         - $ref: "#/components/schemas/Actor"
+ *         - properties:
+ *             displayName:
+ *               type: string
+ */
+
 const accountsRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /accounts:
+ *   get:
+ *     tags:
+ *       - Accounts
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Account'
+ */
 accountsRouter.get('/',
   paginationValidator,
   accountsSortValidator,
@@ -25,11 +77,48 @@ accountsRouter.get('/',
   asyncMiddleware(listAccounts)
 )
 
+/**
+ * @swagger
+ *
+ * '/accounts/{name}':
+ *   get:
+ *     tags:
+ *       - Accounts
+ *     parameters:
+ *       - $ref: "accounts.yaml#/parameters/name"
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Account'
+ */
 accountsRouter.get('/:accountName',
   asyncMiddleware(accountsNameWithHostGetValidator),
   getAccount
 )
 
+/**
+ * @swagger
+ *
+ * '/accounts/{name}/videos':
+ *   get:
+ *     tags:
+ *       - Accounts
+ *     parameters:
+ *       - $ref: "accounts.yaml#/parameters/name"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Video'
+ */
 accountsRouter.get('/:accountName/videos',
   asyncMiddleware(accountsNameWithHostGetValidator),
   paginationValidator,
@@ -41,6 +130,9 @@ accountsRouter.get('/:accountName/videos',
   asyncMiddleware(listAccountVideos)
 )
 
+/**
+ * @todo write swagger definition
+ */
 accountsRouter.get('/:accountName/video-channels',
   asyncMiddleware(listVideoAccountChannelsValidator),
   asyncMiddleware(listVideoAccountChannels)

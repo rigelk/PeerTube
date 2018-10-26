@@ -14,11 +14,17 @@ import { VideoChannelModel } from '../../models/video/video-channel'
 
 const outboxRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 outboxRouter.get('/accounts/:name/outbox',
   localAccountValidator,
   asyncMiddleware(outboxController)
 )
 
+/**
+ * @todo write swagger definition
+ */
 outboxRouter.get('/video-channels/:name/outbox',
   localVideoChannelValidator,
   asyncMiddleware(outboxController)

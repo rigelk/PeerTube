@@ -12,6 +12,9 @@ import { ActorModel } from '../../models/activitypub/actor'
 
 const inboxRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 inboxRouter.post('/inbox',
   signatureValidator,
   asyncMiddleware(checkSignature),
@@ -19,6 +22,9 @@ inboxRouter.post('/inbox',
   inboxController
 )
 
+/**
+ * @todo write swagger definition
+ */
 inboxRouter.post('/accounts/:name/inbox',
   signatureValidator,
   asyncMiddleware(checkSignature),
@@ -26,6 +32,10 @@ inboxRouter.post('/accounts/:name/inbox',
   asyncMiddleware(activityPubValidator),
   inboxController
 )
+
+/**
+ * @todo write swagger definition
+ */
 inboxRouter.post('/video-channels/:name/inbox',
   signatureValidator,
   asyncMiddleware(checkSignature),

@@ -19,7 +19,75 @@ import { ActorFollowModel } from '../../../models/activitypub/actor-follow'
 import { JobQueue } from '../../../lib/job-queue'
 import { removeRedundancyOf } from '../../../lib/redundancy'
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     Actor:
+ *       properties:
+ *         id:
+ *           type: number
+ *         uuid:
+ *           type: string
+ *         url:
+ *           type: string
+ *         name:
+ *           type: string
+ *         host:
+ *           type: string
+ *         followingCount:
+ *           type: number
+ *         followersCount:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *         avatar:
+ *           $ref: "#/components/schemas/Avatar"
+ *     Follow:
+ *       properties:
+ *         id:
+ *           type: number
+ *         follower:
+ *           $ref: "#/components/schemas/Actor"
+ *         following:
+ *           $ref: "#/components/schemas/Actor"
+ *         score:
+ *           type: number
+ *         state:
+ *           type: string
+ *           enum: [pending, accepted]
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ */
+
 const serverFollowsRouter = express.Router()
+
+/**
+ * @swagger
+ *
+ * /server/following:
+ *   get:
+ *     tags:
+ *       - ServerFollowing
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Follow'
+ */
 serverFollowsRouter.get('/following',
   paginationValidator,
   followingSortValidator,
@@ -28,6 +96,23 @@ serverFollowsRouter.get('/following',
   asyncMiddleware(listFollowing)
 )
 
+/**
+ * @swagger
+ *
+ * /server/following:
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - ServerFollowing
+ *     requestBody:
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/Follow'
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 serverFollowsRouter.post('/following',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVER_FOLLOW),
@@ -36,6 +121,26 @@ serverFollowsRouter.post('/following',
   asyncMiddleware(followInstance)
 )
 
+/**
+ * @swagger
+ *
+ * '/server/following/{host}':
+ *   delete:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - ServerFollowing
+ *     parameters:
+ *       - name: host
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 'The host to unfollow '
+ *     responses:
+ *       '201':
+ *         description: successful operation
+ */
 serverFollowsRouter.delete('/following/:host',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_SERVER_FOLLOW),
@@ -43,6 +148,27 @@ serverFollowsRouter.delete('/following/:host',
   asyncMiddleware(removeFollow)
 )
 
+/**
+ * @swagger
+ *
+ * /server/followers:
+ *   get:
+ *     tags:
+ *       - ServerFollowing
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Follow'
+ */
 serverFollowsRouter.get('/followers',
   paginationValidator,
   followersSortValidator,

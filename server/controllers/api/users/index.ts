@@ -53,15 +53,130 @@ const askSendEmailLimiter = new RateLimit({
   delayMs: 0
 })
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     User:
+ *       properties:
+ *         id:
+ *           type: number
+ *         username:
+ *           type: string
+ *         email:
+ *           type: string
+ *         displayNSFW:
+ *           type: boolean
+ *         autoPlayVideo:
+ *           type: boolean
+ *         role:
+ *           type: string
+ *           enum: [User, Moderator, Administrator]
+ *         videoQuota:
+ *           type: number
+ *         createdAt:
+ *           type: string
+ *         account:
+ *           $ref: "#/components/schemas/Account"
+ *         videoChannels:
+ *           type:  array
+ *           items:
+ *             $ref: "#/components/schemas/VideoChannel"
+ *     AddUser:
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: 'The user username '
+ *         password:
+ *           type: string
+ *           description: 'The user password '
+ *         email:
+ *           type: string
+ *           description: 'The user email '
+ *         videoQuota:
+ *           type: string
+ *           description: 'The user videoQuota '
+ *         role:
+ *           type: string
+ *           description: 'The user role '
+ *       required:
+ *         - username
+ *         - password
+ *         - email
+ *         - videoQuota
+ *         - role
+ *     UpdateUser:
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: 'The user id '
+ *         email:
+ *           type: string
+ *           description: 'The updated email of the user '
+ *         videoQuota:
+ *           type: string
+ *           description: 'The updated videoQuota of the user '
+ *         role:
+ *           type: string
+ *           description: 'The updated role of the user '
+ *       required:
+ *         - id
+ *         - email
+ *         - videoQuota
+ *         - role
+ *     RegisterUser:
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: 'The username of the user '
+ *         password:
+ *           type: string
+ *           description: 'The password of the user '
+ *         email:
+ *           type: string
+ *           description: 'The email of the user '
+ *       required:
+ *         - username
+ *         - password
+ *         - email
+ */
+
 const usersRouter = express.Router()
 usersRouter.use('/', myBlocklistRouter)
 usersRouter.use('/', meRouter)
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.get('/autocomplete',
   userAutocompleteValidator,
   asyncMiddleware(autocompleteUsers)
 )
 
+/**
+ * @swagger
+ *
+ * /users:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 usersRouter.get('/',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -72,12 +187,19 @@ usersRouter.get('/',
   asyncMiddleware(listUsers)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/:id/block',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
   asyncMiddleware(usersBlockingValidator),
   asyncMiddleware(blockUser)
 )
+
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/:id/unblock',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -85,6 +207,25 @@ usersRouter.post('/:id/unblock',
   asyncMiddleware(unblockUser)
 )
 
+/**
+ * @swagger
+ *
+ * '/users/{id}':
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - $ref: "users.yaml#/parameters/id"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
 usersRouter.get('/:id',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -92,6 +233,29 @@ usersRouter.get('/:id',
   getUser
 )
 
+/**
+ * @swagger
+ *
+ * /users:
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       application/json:
+ *         required: true
+ *         description: 'User to create'
+ *         schema:
+ *           $ref: '#/components/schemas/AddUser'
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/AddUserResponse"
+ */
 usersRouter.post('/',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -99,6 +263,22 @@ usersRouter.post('/',
   asyncRetryTransactionMiddleware(createUser)
 )
 
+/**
+ * @swagger
+ *
+ * /users/register:
+ *   post:
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       application/json:
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/RegisterUser'
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 usersRouter.post('/register',
   asyncMiddleware(ensureUserRegistrationAllowed),
   ensureUserRegistrationAllowedForIP,
@@ -106,6 +286,26 @@ usersRouter.post('/register',
   asyncRetryTransactionMiddleware(registerUser)
 )
 
+/**
+ * @swagger
+ *
+ * '/users/{id}':
+ *   put:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - $ref: "users.yaml#/parameters/id"
+ *     requestBody:
+ *       application/json:
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/UpdateUser'
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 usersRouter.put('/:id',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -113,6 +313,21 @@ usersRouter.put('/:id',
   asyncMiddleware(updateUser)
 )
 
+/**
+ * @swagger
+ *
+ * '/users/{id}':
+ *   delete:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - $ref: "users.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 usersRouter.delete('/:id',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_USERS),
@@ -120,27 +335,42 @@ usersRouter.delete('/:id',
   asyncMiddleware(removeUser)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/ask-reset-password',
   asyncMiddleware(usersAskResetPasswordValidator),
   asyncMiddleware(askResetUserPassword)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/:id/reset-password',
   asyncMiddleware(usersResetPasswordValidator),
   asyncMiddleware(resetUserPassword)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/ask-send-verify-email',
   askSendEmailLimiter,
   asyncMiddleware(usersAskSendVerifyEmailValidator),
   asyncMiddleware(askSendVerifyUserEmail)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/:id/verify-email',
   asyncMiddleware(usersVerifyEmailValidator),
   asyncMiddleware(verifyUserEmail)
 )
 
+/**
+ * @todo write swagger definition
+ */
 usersRouter.post('/token',
   loginRateLimiter,
   token,

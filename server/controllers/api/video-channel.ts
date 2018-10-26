@@ -34,8 +34,57 @@ import { UserModel } from '../../models/account/user'
 const auditLogger = auditLoggerFactory('channels')
 const reqAvatarFile = createReqFiles([ 'avatarfile' ], IMAGE_MIMETYPE_EXT, { avatarfile: CONFIG.STORAGE.AVATARS_DIR })
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     VideoChannel:
+ *       properties:
+ *         displayName:
+ *           type: string
+ *         description:
+ *           type: string
+ *         isLocal:
+ *           type: boolean
+ *         ownerAccount:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: number
+ *             uuid:
+ *               type: string
+ *     VideoChannelInput:
+ *       properties:
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ */
+
 const videoChannelRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /video-channels:
+ *   get:
+ *     tags:
+ *       - VideoChannel
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/VideoChannel'
+ */
 videoChannelRouter.get('/',
   paginationValidator,
   videoChannelsSortValidator,
@@ -44,12 +93,32 @@ videoChannelRouter.get('/',
   asyncMiddleware(listVideoChannels)
 )
 
+/**
+ * @swagger
+ *
+ * /video-channels:
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoChannel
+ *     requestBody:
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/VideoChannelInput'
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 videoChannelRouter.post('/',
   authenticate,
   asyncMiddleware(videoChannelsAddValidator),
   asyncRetryTransactionMiddleware(addVideoChannel)
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoChannelRouter.post('/:nameWithHost/avatar/pick',
   authenticate,
   reqAvatarFile,
@@ -59,23 +128,35 @@ videoChannelRouter.post('/:nameWithHost/avatar/pick',
   asyncMiddleware(updateVideoChannelAvatar)
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoChannelRouter.put('/:nameWithHost',
   authenticate,
   asyncMiddleware(videoChannelsUpdateValidator),
   asyncRetryTransactionMiddleware(updateVideoChannel)
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoChannelRouter.delete('/:nameWithHost',
   authenticate,
   asyncMiddleware(videoChannelsRemoveValidator),
   asyncRetryTransactionMiddleware(removeVideoChannel)
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoChannelRouter.get('/:nameWithHost',
   asyncMiddleware(videoChannelsNameWithHostValidator),
   asyncMiddleware(getVideoChannel)
 )
 
+/**
+ * @todo write swagger definition
+ */
 videoChannelRouter.get('/:nameWithHost/videos',
   asyncMiddleware(videoChannelsNameWithHostValidator),
   paginationValidator,

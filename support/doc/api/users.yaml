@@ -3,5 +3,6 @@ parameters:
     name: id
     in: path
     required: true
-    type: number
+    schema:
+      type: number
     description: 'The user id'

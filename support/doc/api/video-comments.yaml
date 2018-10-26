@@ -3,11 +3,13 @@ parameters:
     name: threadId
     in: path
     required: true
-    type: number
+    schema:
+      type: number
     description: 'The thread id (root comment id)'
   commentId:
-    name: threadId
+    name: commentId
     in: path
     required: true
-    type: number
+    schema:
+      type: number
     description: 'The comment id'

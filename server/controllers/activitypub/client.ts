@@ -36,70 +36,147 @@ import { getServerActor } from '../../helpers/utils'
 
 const activityPubClientRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * '/accounts/{name}':
+ *   get:
+ *     tags:
+ *       - Accounts
+ *     parameters:
+ *       - $ref: "accounts.yaml#/parameters/name"
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Account'
+ */
 activityPubClientRouter.get('/accounts?/:name',
   executeIfActivityPub(asyncMiddleware(localAccountValidator)),
   executeIfActivityPub(accountController)
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/accounts?/:name/followers',
   executeIfActivityPub(asyncMiddleware(localAccountValidator)),
   executeIfActivityPub(asyncMiddleware(accountFollowersController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/accounts?/:name/following',
   executeIfActivityPub(asyncMiddleware(localAccountValidator)),
   executeIfActivityPub(asyncMiddleware(accountFollowingController))
 )
 
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id',
   executeIfActivityPub(asyncMiddleware(cacheRoute(ROUTE_CACHE_LIFETIME.ACTIVITY_PUB.VIDEOS))),
   executeIfActivityPub(asyncMiddleware(videosGetValidator)),
   executeIfActivityPub(asyncMiddleware(videoController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/activity',
   executeIfActivityPub(asyncMiddleware(videosGetValidator)),
   executeIfActivityPub(asyncMiddleware(videoController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/announces',
   executeIfActivityPub(asyncMiddleware(videosCustomGetValidator('only-video'))),
   executeIfActivityPub(asyncMiddleware(videoAnnouncesController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/announces/:accountId',
   executeIfActivityPub(asyncMiddleware(videosShareValidator)),
   executeIfActivityPub(asyncMiddleware(videoAnnounceController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/likes',
   executeIfActivityPub(asyncMiddleware(videosCustomGetValidator('only-video'))),
   executeIfActivityPub(asyncMiddleware(videoLikesController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/dislikes',
   executeIfActivityPub(asyncMiddleware(videosCustomGetValidator('only-video'))),
   executeIfActivityPub(asyncMiddleware(videoDislikesController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:id/comments',
   executeIfActivityPub(asyncMiddleware(videosCustomGetValidator('only-video'))),
   executeIfActivityPub(asyncMiddleware(videoCommentsController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:videoId/comments/:commentId',
   executeIfActivityPub(asyncMiddleware(videoCommentGetValidator)),
   executeIfActivityPub(asyncMiddleware(videoCommentController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/videos/watch/:videoId/comments/:commentId/activity',
   executeIfActivityPub(asyncMiddleware(videoCommentGetValidator)),
   executeIfActivityPub(asyncMiddleware(videoCommentController))
 )
 
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/video-channels/:name',
   executeIfActivityPub(asyncMiddleware(localVideoChannelValidator)),
   executeIfActivityPub(asyncMiddleware(videoChannelController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/video-channels/:name/followers',
   executeIfActivityPub(asyncMiddleware(localVideoChannelValidator)),
   executeIfActivityPub(asyncMiddleware(videoChannelFollowersController))
 )
+
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/video-channels/:name/following',
   executeIfActivityPub(asyncMiddleware(localVideoChannelValidator)),
   executeIfActivityPub(asyncMiddleware(videoChannelFollowingController))
 )
 
+/**
+ * @todo write swagger definition
+ */
 activityPubClientRouter.get('/redundancy/videos/:videoId/:resolution([0-9]+)(-:fps([0-9]+))?',
   executeIfActivityPub(asyncMiddleware(videoRedundancyGetValidator)),
   executeIfActivityPub(asyncMiddleware(videoRedundancyController))

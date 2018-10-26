@@ -80,6 +80,83 @@ const reqVideoFileUpdate = createReqFiles(
   }
 )
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     VideoConstantNumber:
+ *       properties:
+ *         id:
+ *           type: number
+ *         label:
+ *           type: string
+ *     VideoConstantString:
+ *       properties:
+ *         id:
+ *           type: string
+ *         label:
+ *           type: string
+ *     VideoPrivacy:
+ *       type: string
+ *       enum: [Public, Unlisted, Private]
+ *     Video:
+ *       properties:
+ *         id:
+ *           type: number
+ *         uuid:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *         publishedAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *         category:
+ *           $ref: "#/components/schemas/VideoConstantNumber"
+ *         licence:
+ *           $ref: "#/components/schemas/VideoConstantNumber"
+ *         language:
+ *           $ref: "#/components/schemas/VideoConstantString"
+ *         privacy:
+ *           $ref: "#/components/schemas/VideoPrivacy"
+ *         description:
+ *           type: string
+ *         duration:
+ *           type: number
+ *         isLocal:
+ *           type: boolean
+ *         name:
+ *           type: string
+ *         thumbnailPath:
+ *           type: string
+ *         previewPath:
+ *           type: string
+ *         embedPath:
+ *           type: string
+ *         views:
+ *           type: number
+ *         likes:
+ *           type: number
+ *         dislikes:
+ *           type: number
+ *         nsfw:
+ *           type: boolean
+ *         account:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *             displayName:
+ *               type: string
+ *             url:
+ *               type: string
+ *             host:
+ *               type: string
+ *             avatar:
+ *               $ref: "#/components/schemas/Avatar"
+ */
+
 videosRouter.use('/', abuseVideoRouter)
 videosRouter.use('/', blacklistRouter)
 videosRouter.use('/', rateVideoRouter)
@@ -89,11 +166,109 @@ videosRouter.use('/', videoImportsRouter)
 videosRouter.use('/', ownershipVideoRouter)
 videosRouter.use('/', watchingRouter)
 
+/**
+ * @swagger
+ *
+ * /videos/categories:
+ *   get:
+ *     tags:
+ *       - Video
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
 videosRouter.get('/categories', listVideoCategories)
+
+/**
+ * @swagger
+ *
+ * /videos/licences:
+ *   get:
+ *     tags:
+ *       - Video
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
 videosRouter.get('/licences', listVideoLicences)
+
+/**
+ * @swagger
+ *
+ * /videos/languages:
+ *   get:
+ *     tags:
+ *       - Video
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
 videosRouter.get('/languages', listVideoLanguages)
+
+/**
+ * @swagger
+ *
+ * /videos/privacies:
+ *   get:
+ *     tags:
+ *       - Video
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
 videosRouter.get('/privacies', listVideoPrivacies)
 
+/**
+ * @swagger
+ *
+ * /videos:
+ *   get:
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - name: category
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: number
+ *         description: category id of the video
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Video'
+ */
 videosRouter.get('/',
   paginationValidator,
   videosSortValidator,
@@ -103,12 +278,93 @@ videosRouter.get('/',
   commonVideosFiltersValidator,
   asyncMiddleware(listVideos)
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}":
+ *   put:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *       - $ref: "videos.yaml#/parameters/thumbnailfile"
+ *       - $ref: "videos.yaml#/parameters/previewfile"
+ *       - $ref: "videos.yaml#/parameters/category"
+ *       - $ref: "videos.yaml#/parameters/licence"
+ *       - $ref: "videos.yaml#/parameters/language"
+ *       - $ref: "videos.yaml#/parameters/description"
+ *       - $ref: "videos.yaml#/parameters/waitTranscoding"
+ *       - $ref: "videos.yaml#/parameters/support"
+ *       - $ref: "videos.yaml#/parameters/nsfw"
+ *       - $ref: "videos.yaml#/parameters/name"
+ *       - $ref: "videos.yaml#/parameters/tags"
+ *       - $ref: "videos.yaml#/parameters/commentsEnabled"
+ *       - $ref: "videos.yaml#/parameters/privacy"
+ *       - $ref: "videos.yaml#/parameters/scheduleUpdate"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Video'
+ */
 videosRouter.put('/:id',
   authenticate,
   reqVideoFileUpdate,
   asyncMiddleware(videosUpdateValidator),
   asyncRetryTransactionMiddleware(updateVideo)
 )
+
+/**
+ * @swagger
+ *
+ * /videos/upload:
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - Video
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               videofile:
+ *                 type: string
+ *                 format: binary
+ *                 description: 'Video file'
+ *               channelId:
+ *                 type: number
+ *                 description: 'Channel id that will contain this video'
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/thumbnailfile"
+ *       - $ref: "videos.yaml#/parameters/previewfile"
+ *       - $ref: "videos.yaml#/parameters/category"
+ *       - $ref: "videos.yaml#/parameters/licence"
+ *       - $ref: "videos.yaml#/parameters/language"
+ *       - $ref: "videos.yaml#/parameters/description"
+ *       - $ref: "videos.yaml#/parameters/waitTranscoding"
+ *       - $ref: "videos.yaml#/parameters/support"
+ *       - $ref: "videos.yaml#/parameters/nsfw"
+ *       - $ref: "videos.yaml#/parameters/name"
+ *       - $ref: "videos.yaml#/parameters/tags"
+ *       - $ref: "videos.yaml#/parameters/commentsEnabled"
+ *       - $ref: "videos.yaml#/parameters/privacy"
+ *       - $ref: "videos.yaml#/parameters/scheduleUpdate"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "commons.yaml#/responses/VideoUploadResponse"
+ */
 videosRouter.post('/upload',
   authenticate,
   reqVideoFileAdd,
@@ -116,20 +372,84 @@ videosRouter.post('/upload',
   asyncRetryTransactionMiddleware(addVideo)
 )
 
+/**
+ * @swagger
+ *
+ * "/videos/{id}/description":
+ *   get:
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ */
 videosRouter.get('/:id/description',
   asyncMiddleware(videosGetValidator),
   asyncMiddleware(getVideoDescription)
 )
+
+/**
+ * @swagger
+ *
+ * '/videos/{id}':
+ *   get:
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Video'
+ */
 videosRouter.get('/:id',
   optionalAuthenticate,
   asyncMiddleware(videosGetValidator),
   getVideo
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}/views":
+ *   post:
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 videosRouter.post('/:id/views',
   asyncMiddleware(videosGetValidator),
   asyncMiddleware(viewVideo)
 )
 
+/**
+ * @swagger
+ *
+ * '/videos/{id}':
+ *   delete:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - Video
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 videosRouter.delete('/:id',
   authenticate,
   asyncMiddleware(videosRemoveValidator),
@@ -159,6 +479,8 @@ function listVideoLanguages (req: express.Request, res: express.Response) {
 function listVideoPrivacies (req: express.Request, res: express.Response) {
   res.json(VIDEO_PRIVACIES)
 }
+
+// ---------------------------------------------------------------------------
 
 async function addVideo (req: express.Request, res: express.Response) {
   // Processing the video could be long

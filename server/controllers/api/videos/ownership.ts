@@ -23,12 +23,18 @@ import { UserModel } from '../../../models/account/user'
 
 const ownershipVideoRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 ownershipVideoRouter.post('/:videoId/give-ownership',
   authenticate,
   asyncMiddleware(videosChangeOwnershipValidator),
   asyncRetryTransactionMiddleware(giveVideoOwnership)
 )
 
+/**
+ * @todo write swagger definition
+ */
 ownershipVideoRouter.get('/ownership',
   authenticate,
   paginationValidator,
@@ -36,6 +42,9 @@ ownershipVideoRouter.get('/ownership',
   asyncRetryTransactionMiddleware(listVideoOwnership)
 )
 
+/**
+ * @todo write swagger definition
+ */
 ownershipVideoRouter.post('/ownership/:id/accept',
   authenticate,
   asyncMiddleware(videosTerminateChangeOwnershipValidator),
@@ -43,6 +52,9 @@ ownershipVideoRouter.post('/ownership/:id/accept',
   asyncRetryTransactionMiddleware(acceptOwnership)
 )
 
+/**
+ * @todo write swagger definition
+ */
 ownershipVideoRouter.post('/ownership/:id/refuse',
   authenticate,
   asyncMiddleware(videosTerminateChangeOwnershipValidator),

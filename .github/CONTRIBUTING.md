@@ -29,7 +29,9 @@ You can help to write the documentation of the REST API, code, architecture,
 demonstrations.
 
 For the REST API you can see the documentation in [/support/doc/api](/support/doc/api) directory.
-Then, you can just open the `openapi.yaml` file in a special editor like [http://editor.swagger.io/](http://editor.swagger.io/) to easily see and edit the documentation.
+Then, you can just open the `openapi.yaml` file in a special editor like [http://editor.swagger.io/](http://editor.swagger.io/) to easily see the documentation.
+Since the documentation is generated from `@swagger` JSDoc comments along each registered route,
+please complete them as you write controllers.
 
 Some hints:
  * Routes are defined in [/server/controllers/](/server/controllers/) directory

@@ -22,6 +22,33 @@ import { loadActorUrlOrGetFromWebfinger } from '../../helpers/webfinger'
 
 const searchRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /search/videos:
+ *   get:
+ *     tags:
+ *       - Search
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *       - name: search
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 'String to search'
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Video'
+ */
 searchRouter.get('/videos',
   paginationValidator,
   setDefaultPagination,
@@ -33,6 +60,9 @@ searchRouter.get('/videos',
   asyncMiddleware(searchVideos)
 )
 
+/**
+ * @todo write swagger definition
+ */
 searchRouter.get('/video-channels',
   paginationValidator,
   setDefaultPagination,

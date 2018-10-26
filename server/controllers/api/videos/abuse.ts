@@ -24,8 +24,60 @@ import { auditLoggerFactory, VideoAbuseAuditView } from '../../../helpers/audit-
 import { UserModel } from '../../../models/account/user'
 
 const auditLogger = auditLoggerFactory('abuse')
+
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     VideoAbuse:
+ *       properties:
+ *         id:
+ *           type: number
+ *         reason:
+ *           type: string
+ *         reporterAccount:
+ *           $ref: "#/components/schemas/Account"
+ *         video:
+ *           type: object
+ *           properties:
+ *             id:
+ *               type: number
+ *             name:
+ *               type: string
+ *             uuid:
+ *               type: string
+ *             url:
+ *               type: string
+ *         createdAt:
+ *           type: string
+ */
+
 const abuseVideoRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /videos/abuse:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoAbuse
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/VideoAbuse'
+ */
 abuseVideoRouter.get('/abuse',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_ABUSES),
@@ -35,17 +87,41 @@ abuseVideoRouter.get('/abuse',
   setDefaultPagination,
   asyncMiddleware(listVideoAbuses)
 )
+
+/**
+ * @todo write swagger definition
+ */
 abuseVideoRouter.put('/:videoId/abuse/:id',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_ABUSES),
   asyncMiddleware(videoAbuseUpdateValidator),
   asyncRetryTransactionMiddleware(updateVideoAbuse)
 )
+
+/**
+ * @swagger
+ *
+ * "/videos/{id}/abuse":
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - VideoAbuse
+ *     parameters:
+ *       - $ref: "videos.yaml#/parameters/id"
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 abuseVideoRouter.post('/:videoId/abuse',
   authenticate,
   asyncMiddleware(videoAbuseReportValidator),
   asyncRetryTransactionMiddleware(reportVideoAbuse)
 )
+
+/**
+ * @todo write swagger definition
+ */
 abuseVideoRouter.delete('/:videoId/abuse/:id',
   authenticate,
   ensureUserHasRight(UserRight.MANAGE_VIDEO_ABUSES),

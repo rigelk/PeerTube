@@ -44,23 +44,112 @@ const auditLogger = auditLoggerFactory('users-me')
 
 const reqAvatarFile = createReqFiles([ 'avatarfile' ], IMAGE_MIMETYPE_EXT, { avatarfile: CONFIG.STORAGE.AVATARS_DIR })
 
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     Avatar:
+ *       properties:
+ *         path:
+ *           type: string
+ *         createdAt:
+ *           type: string
+ *         updatedAt:
+ *           type: string
+ *     UpdateMe:
+ *       properties:
+ *         password:
+ *           type: string
+ *           description: 'Your new password '
+ *         email:
+ *           type: string
+ *           description: 'Your new email '
+ *         displayNSFW:
+ *           type: string
+ *           description: 'Your new displayNSFW '
+ *         autoPlayVideo:
+ *           type: string
+ *           description: 'Your new autoPlayVideo '
+ *       required:
+ *         - password
+ *         - email
+ *         - displayNSFW
+ *         - autoPlayVideo
+ *     GetMeVideoRating:
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: 'Id of the video '
+ *         rating:
+ *           type: number
+ *           description: 'Rating of the video '
+ *       required:
+ *         - id
+ *         - rating
+ */
+
 const meRouter = express.Router()
 
+/**
+ * @swagger
+ *
+ * /users/me:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 meRouter.get('/me',
   authenticate,
   asyncMiddleware(getUserInformation)
 )
+
+/**
+ * @todo write swagger definition
+ */
 meRouter.delete('/me',
   authenticate,
   asyncMiddleware(deleteMeValidator),
   asyncMiddleware(deleteMe)
 )
 
+/**
+ * @swagger
+ *
+ * /users/me/video-quota-used:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters: []
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: number
+ */
 meRouter.get('/me/video-quota-used',
   authenticate,
   asyncMiddleware(getUserVideoQuotaUsed)
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.get('/me/videos/imports',
   authenticate,
   paginationValidator,
@@ -70,6 +159,29 @@ meRouter.get('/me/videos/imports',
   asyncMiddleware(getUserVideoImports)
 )
 
+/**
+ * @swagger
+ *
+ * /users/me/videos:
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - $ref: "commons.yaml#/parameters/start"
+ *       - $ref: "commons.yaml#/parameters/count"
+ *       - $ref: "commons.yaml#/parameters/sort"
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Video'
+ */
 meRouter.get('/me/videos',
   authenticate,
   paginationValidator,
@@ -79,18 +191,87 @@ meRouter.get('/me/videos',
   asyncMiddleware(getUserVideos)
 )
 
+/**
+ * @swagger
+ *
+ * '/users/me/videos/{videoId}/rating':
+ *   get:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - name: videoId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: 'The video id '
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/GetMeVideoRating'
+ */
 meRouter.get('/me/videos/:videoId/rating',
   authenticate,
   asyncMiddleware(usersVideoRatingValidator),
   asyncMiddleware(getUserVideoRating)
 )
 
+/**
+ * @swagger
+ *
+ * /users/me:
+ *   put:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       application/json:
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/UpdateMe'
+ *     responses:
+ *       '204':
+ *         $ref: "commons.yaml#/responses/emptySuccess"
+ */
 meRouter.put('/me',
   authenticate,
   asyncMiddleware(usersUpdateMeValidator),
   asyncRetryTransactionMiddleware(updateMe)
 )
 
+/**
+ * @swagger
+ *
+ * /users/me/avatar/pick:
+ *   post:
+ *     security:
+ *       - OAuth2: [ ]
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       description: The file to upload.
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatarfile:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       '200':
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Avatar'
+ */
 meRouter.post('/me/avatar/pick',
   authenticate,
   reqAvatarFile,
@@ -100,6 +281,9 @@ meRouter.post('/me/avatar/pick',
 
 // ##### Subscriptions part #####
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.get('/me/subscriptions/videos',
   authenticate,
   paginationValidator,
@@ -110,12 +294,18 @@ meRouter.get('/me/subscriptions/videos',
   asyncMiddleware(getUserSubscriptionVideos)
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.get('/me/subscriptions/exist',
   authenticate,
   areSubscriptionsExistValidator,
   asyncMiddleware(areSubscriptionsExist)
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.get('/me/subscriptions',
   authenticate,
   paginationValidator,
@@ -125,18 +315,27 @@ meRouter.get('/me/subscriptions',
   asyncMiddleware(getUserSubscriptions)
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.post('/me/subscriptions',
   authenticate,
   userSubscriptionAddValidator,
   asyncMiddleware(addUserSubscription)
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.get('/me/subscriptions/:uri',
   authenticate,
   userSubscriptionGetValidator,
   getUserSubscription
 )
 
+/**
+ * @todo write swagger definition
+ */
 meRouter.delete('/me/subscriptions/:uri',
   authenticate,
   userSubscriptionGetValidator,

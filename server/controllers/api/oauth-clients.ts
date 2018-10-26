@@ -7,6 +7,9 @@ import { OAuthClientModel } from '../../models/oauth/oauth-client'
 
 const oauthClientsRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 oauthClientsRouter.get('/local',
   asyncMiddleware(getLocalClient)
 )

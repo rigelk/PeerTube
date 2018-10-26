@@ -20,16 +20,27 @@ const reqVideoCaptionAdd = createReqFiles(
 
 const videoCaptionsRouter = express.Router()
 
+/**
+ * @todo write swagger definition
+ */
 videoCaptionsRouter.get('/:videoId/captions',
   asyncMiddleware(listVideoCaptionsValidator),
   asyncMiddleware(listVideoCaptions)
 )
+
+/**
+ * @todo write swagger definition
+ */
 videoCaptionsRouter.put('/:videoId/captions/:captionLanguage',
   authenticate,
   reqVideoCaptionAdd,
   asyncMiddleware(addVideoCaptionValidator),
   asyncRetryTransactionMiddleware(addVideoCaption)
 )
+
+/**
+ * @todo write swagger definition
+ */
 videoCaptionsRouter.delete('/:videoId/captions/:captionLanguage',
   authenticate,
   asyncMiddleware(deleteVideoCaptionValidator),
