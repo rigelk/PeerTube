@@ -69,6 +69,8 @@ const videoChannelRouter = express.Router()
  *
  * /video-channels:
  *   get:
+ *     operationId: getVideoChannels
+ *     summary: Gets list of video channels
  *     tags:
  *       - VideoChannel
  *     parameters:
@@ -98,14 +100,17 @@ videoChannelRouter.get('/',
  *
  * /video-channels:
  *   post:
+ *     operationId: createSelfVideoChannel
+ *     summary: Creates a video channel for the current user
  *     security:
  *       - OAuth2: [ ]
  *     tags:
  *       - VideoChannel
  *     requestBody:
- *       application/json:
- *         schema:
- *           $ref: '#/components/schemas/VideoChannelInput'
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VideoChannelInput'
  *     responses:
  *       '204':
  *         $ref: "commons.yaml#/responses/emptySuccess"

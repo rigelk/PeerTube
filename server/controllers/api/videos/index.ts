@@ -171,6 +171,8 @@ videosRouter.use('/', watchingRouter)
  *
  * /videos/categories:
  *   get:
+ *     operationId: getVideoCategories
+ *     summary: Gets list of video categories known by the server
  *     tags:
  *       - Video
  *     responses:
@@ -190,6 +192,8 @@ videosRouter.get('/categories', listVideoCategories)
  *
  * /videos/licences:
  *   get:
+ *     operationId: getVideoLicences
+ *     summary: Gets list of video licences known by the server
  *     tags:
  *       - Video
  *     responses:
@@ -209,6 +213,8 @@ videosRouter.get('/licences', listVideoLicences)
  *
  * /videos/languages:
  *   get:
+ *     operationId: getVideoLanguages
+ *     summary: Gets list of languages known by the server
  *     tags:
  *       - Video
  *     responses:
@@ -228,6 +234,8 @@ videosRouter.get('/languages', listVideoLanguages)
  *
  * /videos/privacies:
  *   get:
+ *     operationId: getVideoPrivacies
+ *     summary: Gets list of privacy policies supported by the server
  *     tags:
  *       - Video
  *     responses:
@@ -247,6 +255,8 @@ videosRouter.get('/privacies', listVideoPrivacies)
  *
  * /videos:
  *   get:
+ *     operationId: getVideos
+ *     summary: Gets list of videos
  *     tags:
  *       - Video
  *     parameters:
@@ -284,26 +294,49 @@ videosRouter.get('/',
  *
  * "/videos/{id}":
  *   put:
+ *     operationId: putVideoMetadataById
+ *     summary: Updates metadata for a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
  *       - Video
  *     parameters:
  *       - $ref: "videos.yaml#/parameters/id"
- *       - $ref: "videos.yaml#/parameters/thumbnailfile"
- *       - $ref: "videos.yaml#/parameters/previewfile"
- *       - $ref: "videos.yaml#/parameters/category"
- *       - $ref: "videos.yaml#/parameters/licence"
- *       - $ref: "videos.yaml#/parameters/language"
- *       - $ref: "videos.yaml#/parameters/description"
- *       - $ref: "videos.yaml#/parameters/waitTranscoding"
- *       - $ref: "videos.yaml#/parameters/support"
- *       - $ref: "videos.yaml#/parameters/nsfw"
- *       - $ref: "videos.yaml#/parameters/name"
- *       - $ref: "videos.yaml#/parameters/tags"
- *       - $ref: "videos.yaml#/parameters/commentsEnabled"
- *       - $ref: "videos.yaml#/parameters/privacy"
- *       - $ref: "videos.yaml#/parameters/scheduleUpdate"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               thumbnailfile:
+ *                 $ref: "videos.yaml#/parameters/thumbnailfile"
+ *               previewfile:
+ *                 $ref: "videos.yaml#/parameters/previewfile"
+ *               category:
+ *                 $ref: "videos.yaml#/parameters/category"
+ *               licence:
+ *                 $ref: "videos.yaml#/parameters/licence"
+ *               language:
+ *                 $ref: "videos.yaml#/parameters/language"
+ *               description:
+ *                 $ref: "videos.yaml#/parameters/description"
+ *               waitTranscoding:
+ *                 $ref: "videos.yaml#/parameters/waitTranscoding"
+ *               support:
+ *                 $ref: "videos.yaml#/parameters/support"
+ *               nsfw:
+ *                 $ref: "videos.yaml#/parameters/nsfw"
+ *               name:
+ *                 $ref: "videos.yaml#/parameters/name"
+ *               tags:
+ *                 $ref: "videos.yaml#/parameters/tags"
+ *               commentsEnabled:
+ *                 $ref: "videos.yaml#/parameters/commentsEnabled"
+ *               privacy:
+ *                 $ref: "videos.yaml#/parameters/privacy"
+ *               scheduleUpdate:
+ *                 $ref: "videos.yaml#/parameters/scheduleUpdate"
  *     responses:
  *       '200':
  *         description: successful operation
@@ -324,6 +357,8 @@ videosRouter.put('/:id',
  *
  * /videos/upload:
  *   post:
+ *     operationId: uploadVideo
+ *     summary: Uploads a video file with its metadata
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -342,21 +377,34 @@ videosRouter.put('/:id',
  *               channelId:
  *                 type: number
  *                 description: 'Channel id that will contain this video'
- *     parameters:
- *       - $ref: "videos.yaml#/parameters/thumbnailfile"
- *       - $ref: "videos.yaml#/parameters/previewfile"
- *       - $ref: "videos.yaml#/parameters/category"
- *       - $ref: "videos.yaml#/parameters/licence"
- *       - $ref: "videos.yaml#/parameters/language"
- *       - $ref: "videos.yaml#/parameters/description"
- *       - $ref: "videos.yaml#/parameters/waitTranscoding"
- *       - $ref: "videos.yaml#/parameters/support"
- *       - $ref: "videos.yaml#/parameters/nsfw"
- *       - $ref: "videos.yaml#/parameters/name"
- *       - $ref: "videos.yaml#/parameters/tags"
- *       - $ref: "videos.yaml#/parameters/commentsEnabled"
- *       - $ref: "videos.yaml#/parameters/privacy"
- *       - $ref: "videos.yaml#/parameters/scheduleUpdate"
+ *               thumbnailfile:
+ *                 $ref: "videos.yaml#/parameters/thumbnailfile"
+ *               previewfile:
+ *                 $ref: "videos.yaml#/parameters/previewfile"
+ *               category:
+ *                 $ref: "videos.yaml#/parameters/category"
+ *               licence:
+ *                 $ref: "videos.yaml#/parameters/licence"
+ *               language:
+ *                 $ref: "videos.yaml#/parameters/language"
+ *               description:
+ *                 $ref: "videos.yaml#/parameters/description"
+ *               waitTranscoding:
+ *                 $ref: "videos.yaml#/parameters/waitTranscoding"
+ *               support:
+ *                 $ref: "videos.yaml#/parameters/support"
+ *               nsfw:
+ *                 $ref: "videos.yaml#/parameters/nsfw"
+ *               name:
+ *                 $ref: "videos.yaml#/parameters/name"
+ *               tags:
+ *                 $ref: "videos.yaml#/parameters/tags"
+ *               commentsEnabled:
+ *                 $ref: "videos.yaml#/parameters/commentsEnabled"
+ *               privacy:
+ *                 $ref: "videos.yaml#/parameters/privacy"
+ *               scheduleUpdate:
+ *                 $ref: "videos.yaml#/parameters/scheduleUpdate"
  *     responses:
  *       '200':
  *         description: successful operation
@@ -377,6 +425,8 @@ videosRouter.post('/upload',
  *
  * "/videos/{id}/description":
  *   get:
+ *     operationId: getVideoDescriptionById
+ *     summary: Gets a video description by its id
  *     tags:
  *       - Video
  *     parameters:
@@ -399,6 +449,8 @@ videosRouter.get('/:id/description',
  *
  * '/videos/{id}':
  *   get:
+ *     operationId: getVideoById
+ *     summary: Gets a video by its id
  *     tags:
  *       - Video
  *     parameters:
@@ -422,6 +474,8 @@ videosRouter.get('/:id',
  *
  * "/videos/{id}/views":
  *   post:
+ *     operationId: createVideoViewById
+ *     summary: Adds a view to the video by its id
  *     tags:
  *       - Video
  *     parameters:
@@ -440,6 +494,8 @@ videosRouter.post('/:id/views',
  *
  * '/videos/{id}':
  *   delete:
+ *     operationId: deleteVideobyId
+ *     summary: Deletes a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

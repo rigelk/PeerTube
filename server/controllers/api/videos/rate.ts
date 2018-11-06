@@ -15,6 +15,8 @@ const rateVideoRouter = express.Router()
  *
  * "/videos/{id}/rate":
  *   put:
+ *     operationId: putVideoByIdRate
+ *     summary: Vote for a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

@@ -73,6 +73,8 @@ configRouter.get('/about', getAbout)
  *
  * /config:
  *   get:
+ *     operationId: getConfig
+ *     summary: Gets the configuration of the server
  *     tags:
  *       - Config
  *     responses:

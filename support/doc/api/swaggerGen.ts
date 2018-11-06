@@ -6,6 +6,10 @@ const packageJSON = require('../../../../package.json')
 const swaggerPath = './support/doc/api/swagger.yaml'
 const swaggerDefinition = {
   openapi: '3.0.0',
+  tags: [
+    { name: 'PeerTube' },
+    { name: 'Server' }
+  ],
   info: {
     title: 'PeerTube',
     version: packageJSON.version,

@@ -57,6 +57,8 @@ const accountsRouter = express.Router()
  *
  * /accounts:
  *   get:
+ *     operationId: getAccounts
+ *     summary: Gets all accounts
  *     tags:
  *       - Accounts
  *     responses:
@@ -82,6 +84,8 @@ accountsRouter.get('/',
  *
  * '/accounts/{name}':
  *   get:
+ *     operationId: getAccountByName
+ *     summary: Gets the account by name
  *     tags:
  *       - Accounts
  *     parameters:
@@ -107,6 +111,8 @@ accountsRouter.get('/:accountName',
  *
  * '/accounts/{name}/videos':
  *   get:
+ *     operationId: getAccountByNameVideos
+ *     summary: Gets videos for an account, provided the name of that account
  *     tags:
  *       - Accounts
  *     parameters:

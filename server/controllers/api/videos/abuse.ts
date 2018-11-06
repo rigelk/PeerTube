@@ -60,6 +60,8 @@ const abuseVideoRouter = express.Router()
  *
  * /videos/abuse:
  *   get:
+ *     operationId: getVideoAbuse
+ *     summary: Gets list of reported video abuses
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -103,6 +105,8 @@ abuseVideoRouter.put('/:videoId/abuse/:id',
  *
  * "/videos/{id}/abuse":
  *   post:
+ *     operationId: reportVideoByIdAbuse
+ *     summary: Report an abuse, on a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

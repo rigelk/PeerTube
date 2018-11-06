@@ -96,6 +96,8 @@ const meRouter = express.Router()
  *
  * /users/me:
  *   get:
+ *     operationId: getUserSelf
+ *     summary: Gets current user information
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -129,6 +131,8 @@ meRouter.delete('/me',
  *
  * /users/me/video-quota-used:
  *   get:
+ *     operationId: getUserSelfUsedQuota
+ *     summary: Gets current user used quota
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -164,6 +168,8 @@ meRouter.get('/me/videos/imports',
  *
  * /users/me/videos:
  *   get:
+ *     operationId: getUserSelfVideos
+ *     summary: Gets videos of the current user
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -196,6 +202,8 @@ meRouter.get('/me/videos',
  *
  * '/users/me/videos/{videoId}/rating':
  *   get:
+ *     operationId: getUserSelfVideoByIdRating
+ *     summary: Gets rating of video by its id, among those of the current user
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -206,7 +214,7 @@ meRouter.get('/me/videos',
  *         required: true
  *         schema:
  *           type: string
- *         description: 'The video id '
+ *         description: 'The video id'
  *     responses:
  *       '200':
  *         description: successful operation
@@ -226,15 +234,18 @@ meRouter.get('/me/videos/:videoId/rating',
  *
  * /users/me:
  *   put:
+ *     operationId: updateUserSelf
+ *     summary: Updates current user information
  *     security:
  *       - OAuth2: [ ]
  *     tags:
  *       - User
  *     requestBody:
- *       application/json:
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/UpdateMe'
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateMe'
  *     responses:
  *       '204':
  *         $ref: "commons.yaml#/responses/emptySuccess"
@@ -250,6 +261,8 @@ meRouter.put('/me',
  *
  * /users/me/avatar/pick:
  *   post:
+ *     operationId: updateUserSelfAvatar
+ *     summary: Updates current user avatar
  *     security:
  *       - OAuth2: [ ]
  *     tags:

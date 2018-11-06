@@ -72,6 +72,8 @@ const serverFollowsRouter = express.Router()
  *
  * /server/following:
  *   get:
+ *     operationId: getServerFollowing
+ *     summary: Gets servers followed by the server
  *     tags:
  *       - ServerFollowing
  *     parameters:
@@ -101,14 +103,17 @@ serverFollowsRouter.get('/following',
  *
  * /server/following:
  *   post:
+ *     operationId: postServerFollow
+ *     summary: Follows a server
  *     security:
  *       - OAuth2: [ ]
  *     tags:
  *       - ServerFollowing
  *     requestBody:
- *       application/json:
- *         schema:
- *           $ref: '#/components/schemas/Follow'
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Follow'
  *     responses:
  *       '204':
  *         $ref: "commons.yaml#/responses/emptySuccess"
@@ -126,6 +131,8 @@ serverFollowsRouter.post('/following',
  *
  * '/server/following/{host}':
  *   delete:
+ *     operationId: deleteServerFollowByHost
+ *     summary: Unfollows a server by hostname
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -153,6 +160,8 @@ serverFollowsRouter.delete('/following/:host',
  *
  * /server/followers:
  *   get:
+ *     operationId: getServerFollowers
+ *     summary: Gets followers of the server
  *     tags:
  *       - ServerFollowing
  *     parameters:

@@ -27,6 +27,8 @@ const searchRouter = express.Router()
  *
  * /search/videos:
  *   get:
+ *     operationId: getSearchVideo
+ *     summary: Get the videos corresponding to a given query
  *     tags:
  *       - Search
  *     parameters:

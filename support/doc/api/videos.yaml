@@ -7,97 +7,60 @@ parameters:
       type: string
     description: 'The video id or uuid'
   thumbnailfile:
-    name: thumbnailfile
-    in: formData
-    schema:
-      type: file
+    type: string
+    format: binary
     description: 'Video thumbnail file'
   previewfile:
-    name: previewfile
-    in: formData
-    schema:
-      type: file
+    type: string
+    format: binary
     description: 'Video preview file'
   category:
-    name: category
-    in: formData
-    schema:
-      type: number
+    type: number
     description: 'Video category'
   licence:
-    name: licence
-    in: formData
-    schema:
-      type: number
+    type: number
     description: 'Video licence'
   language:
-    name: language
-    in: formData
-    schema:
-      type: string
+    type: string
     description: 'Video language'
   description:
-    name: description
-    in: formData
-    schema:
-      type: string
+    type: string
     description: 'Video description'
   waitTranscoding:
-    name: waitTranscoding
-    in: formData
-    schema:
-      type: boolean
+    type: boolean
     description: 'Whether or not we wait transcoding before publish the video'
   support:
-    name: support
-    in: formData
-    schema:
-      type: string
+    type: string
     description: 'Text describing how to support the video uploader'
   nsfw:
-    name: nsfw
-    in: formData
-    schema:
-      type: boolean
+    type: boolean
     description: 'Whether or not this video contains sensitive content'
   name:
-    name: name
-    in: formData
-    schema:
-      type: string
+    type: string
     description: 'Video name'
   tags:
-    name: tags
-    in: formData
-    schema:
-      type: string[]
+    type: array
+    items:
+      type: string
     description: 'Video tags'
   commentsEnabled:
-    name: commentsEnabled
-    in: formData
-    schema:
-      type: boolean
+    type: boolean
     description: 'Enable or disable comments for this video'
   privacy:
-    name: privacy
-    in: formData
-    schema:
-      type: string
+    type: string
     enum: [Public, Unlisted]
     description: 'Video privacy'
   scheduleUpdate:
-    name: scheduleUpdate
-    in: formData
-    required: false
     description: 'Schedule an update at a specific datetime'
+    type: object
+    required:
+      - updateAt
     properties:
       updateAt:
-        schema:
-          type: dateTime
+        type: string
+        format: date-time
         description: 'When to update the video'
-        required: true
       privacy:
-        schema:
-          type: string
+        type: string
         enum: [Public, Unlisted]
         description: 'Video privacy target'

@@ -63,7 +63,7 @@ const auditLogger = auditLoggerFactory('comments')
  *         children:
  *           type: array
  *           items:
- *             $ref: "#/components/schemas/VideoCommentThreadTree"
+ *             $ref: "commons.yaml#/responses/VideoCommentThreadTree"
  */
 
 const videoCommentRouter = express.Router()
@@ -73,6 +73,8 @@ const videoCommentRouter = express.Router()
  *
  * "/videos/{id}/comment-threads":
  *   get:
+ *     operationId: getVideoByIdCommentThreads
+ *     summary: Gets the comment threads of a video by its id
  *     tags:
  *       - VideoComment
  *     parameters:
@@ -103,6 +105,8 @@ videoCommentRouter.get('/:videoId/comment-threads',
  *
  * "/videos/{id}/comment-threads/{threadId}":
  *   get:
+ *     operationId: getVideoByIdCommentThreadById
+ *     summary: Gets the comment thread by its id, of a video by its id
  *     tags:
  *       - VideoComment
  *     parameters:
@@ -127,6 +131,8 @@ videoCommentRouter.get('/:videoId/comment-threads/:threadId',
  *
  * "/videos/{id}/comment-threads":
  *   post:
+ *     operationId: createVideoByIdCommentThread
+ *     summary: Creates a comment thread, on a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -152,6 +158,8 @@ videoCommentRouter.post('/:videoId/comment-threads',
  *
  * "/videos/{id}/comments/{commentId}":
  *   post:
+ *     operationId: createVideoByIdCommentThreadResponse
+ *     summary: Creates a comment in a comment thread by its id, of a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -178,6 +186,8 @@ videoCommentRouter.post('/:videoId/comments/:commentId',
  *
  * "/videos/{id}/comments/{commentId}":
  *   delete:
+ *     operationId: deleteVideoByIdCommentThreadResponse
+ *     summary: Deletes a comment in a comment therad by its id, of a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

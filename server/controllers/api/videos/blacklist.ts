@@ -57,6 +57,8 @@ const blacklistRouter = express.Router()
  *
  * "/videos/{id}/blacklist":
  *   post:
+ *     operationId: createVideoByIdBlacklist
+ *     summary: Puts on blacklist a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -79,6 +81,8 @@ blacklistRouter.post('/:videoId/blacklist',
  *
  * /videos/blacklist:
  *   get:
+ *     operationId: getVideoBlacklist
+ *     summary: Gets list of videos on blacklist
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -122,6 +126,8 @@ blacklistRouter.put('/:videoId/blacklist',
  *
  * "/videos/{id}/blacklist":
  *   delete:
+ *     operationId: deleteVideoByIdBlacklist
+ *     summary: Deletes an entry of the blacklist of a video by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

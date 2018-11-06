@@ -37,24 +37,7 @@ import { getServerActor } from '../../helpers/utils'
 const activityPubClientRouter = express.Router()
 
 /**
- * @swagger
- *
- * '/accounts/{name}':
- *   get:
- *     tags:
- *       - Accounts
- *     parameters:
- *       - $ref: "accounts.yaml#/parameters/name"
- *       - $ref: "commons.yaml#/parameters/start"
- *       - $ref: "commons.yaml#/parameters/count"
- *       - $ref: "commons.yaml#/parameters/sort"
- *     responses:
- *       '200':
- *         description: successful operation
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Account'
+ * @todo write swagger definition
  */
 activityPubClientRouter.get('/accounts?/:name',
   executeIfActivityPub(asyncMiddleware(localAccountValidator)),

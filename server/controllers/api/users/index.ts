@@ -159,6 +159,8 @@ usersRouter.get('/autocomplete',
  *
  * /users:
  *   get:
+ *     operationId: getUsers
+ *     summary: Gets a list of users
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -212,6 +214,8 @@ usersRouter.post('/:id/unblock',
  *
  * '/users/{id}':
  *   get:
+ *     operationId: getUserById
+ *     summary: Gets user by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -238,16 +242,19 @@ usersRouter.get('/:id',
  *
  * /users:
  *   post:
+ *     operationId: createUser
+ *     summary: Creates user
  *     security:
  *       - OAuth2: [ ]
  *     tags:
  *       - User
  *     requestBody:
- *       application/json:
- *         required: true
- *         description: 'User to create'
- *         schema:
- *           $ref: '#/components/schemas/AddUser'
+ *       required: true
+ *       description: 'User to create'
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AddUser'
  *     responses:
  *       '200':
  *         description: successful operation
@@ -268,13 +275,16 @@ usersRouter.post('/',
  *
  * /users/register:
  *   post:
+ *     operationId: createUserRegister
+ *     summary: Register a user
  *     tags:
  *       - User
  *     requestBody:
- *       application/json:
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/RegisterUser'
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterUser'
  *     responses:
  *       '204':
  *         $ref: "commons.yaml#/responses/emptySuccess"
@@ -291,6 +301,8 @@ usersRouter.post('/register',
  *
  * '/users/{id}':
  *   put:
+ *     operationId: updateUserById
+ *     summary: Updates user profile by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:
@@ -298,10 +310,11 @@ usersRouter.post('/register',
  *     parameters:
  *       - $ref: "users.yaml#/parameters/id"
  *     requestBody:
- *       application/json:
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/UpdateUser'
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateUser'
  *     responses:
  *       '204':
  *         $ref: "commons.yaml#/responses/emptySuccess"
@@ -318,6 +331,8 @@ usersRouter.put('/:id',
  *
  * '/users/{id}':
  *   delete:
+ *     operationId: deleteUserById
+ *     summary: Deletes a user by its id
  *     security:
  *       - OAuth2: [ ]
  *     tags:

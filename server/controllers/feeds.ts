@@ -24,28 +24,24 @@ const feedsRouter = express.Router()
  *
  * /feeds/video-comments.{format}:
  *   get:
+ *     operationId: getFeedVideoComments
+ *     summary: Gets the feed of video comments for the server, with optional filter by video id
  *     tags:
  *       - Feeds
- *     produces:
- *       - application/atom+xml
- *       - application/rss+xml
- *       - application/json
  *     parameters:
  *       - name: format
  *         in: path
- *         required: false
+ *         required: true
  *         schema:
  *           type: string
- *         enum: [ 'xml', 'atom', 'json' ]
- *         default: 'xml'
+ *           enum: [ 'xml', 'atom', 'json' ]
  *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
  *       - name: format
  *         in: query
  *         required: false
  *         schema:
  *           type: string
- *         enum: [ 'xml', 'atom', 'json' ]
- *         default: 'xml'
+ *           enum: [ 'xml', 'atom', 'json' ]
  *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
  *       - name: videoId
  *         in: query
@@ -68,20 +64,17 @@ feedsRouter.get('/feeds/video-comments.:format',
  *
  * /feeds/videos.{format}:
  *   get:
+ *     operationId: getFeedVideos
+ *     summary: Gets the feed of videos for the server, with optional filter by account name or id
  *     tags:
  *       - Feeds
- *     produces:
- *       - application/atom+xml
- *       - application/rss+xml
- *       - application/json
  *     parameters:
  *       - name: format
  *         in: path
  *         required: true
  *         schema:
  *           type: string
- *         enum: [ 'xml', 'atom', 'json']
- *         default: 'xml'
+ *           enum: [ 'xml', 'atom', 'json']
  *         description: 'The format expected (xml defaults to RSS 2.0, atom to ATOM 1.0 and json to JSON FEED 1.0'
  *       - name: accountId
  *         in: query
