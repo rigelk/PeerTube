@@ -71,13 +71,16 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && ./scripts/openapi-peertube-version.sh"
+      "pre-commit": "./scripts/openapi-peertube-version.sh && lint-staged"
     }
   },
   "lint-staged": {
     "*.scss": [
       "sass-lint -c client/.sass-lint.yml",
       "git add"
+    ],
+    "support/doc/api/*.yaml": [
+      "node ./node_modules/swagger-cli/bin/swagger-cli.js validate support/doc/api/openapi.yaml"
     ]
   },
   "resolutions": {
@@ -201,6 +204,7 @@
     "source-map-support": "^0.5.0",
     "spectacle-docs": "^1.0.2",
     "supertest": "^3.0.0",
+    "swagger-cli": "^2.2.0",
     "ts-node": "7.0.1",
     "tslint": "^5.7.0",
     "tslint-config-standard": "^8.0.1",
