@@ -29,8 +29,7 @@ app.all('*', async (req, res) => {
     // delete req.headers['if-none-match'];
     // req.headers['if-modified-since'] = '*';
 
-    const skipPort = !url.port || (url.protocol === 'http:' && url.port === 80) || (url.protocol === 'https:' && url.port === 443);
-    const fakedCors = req.headers['referer'] ? fakeCorsHeaders(req.headers['referer'].replace(/https?:\/\/.+?\//g, `${url.protocol}//${url.host}${skipPort ? '' : `:${url.port}`}/`)) : {};
+    const fakedCors = req.headers['referer'] ? fakeCorsHeaders(req.headers['referer'].replace(/https?:\/\/.+?\//g, `${url.protocol}//${url.host}/`)) : {};
     const data = req.headers['content-type'] ? await new Promise((resolve, reject) => {
         const buffers = [];
         req.on('data', (d) => buffers.push(d));
