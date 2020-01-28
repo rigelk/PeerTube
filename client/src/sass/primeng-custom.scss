@@ -8,6 +8,7 @@
   font-family: 'Glyphicons Halflings';
   text-decoration: none !important;
   color: var(--mainForegroundColor) !important;
+  font-display: swap;
 }
 
 my-edit-button,
@@ -373,6 +374,8 @@ p-tablecheckbox:hover div .ui-chkbox-box {
 }
 
 p-inputswitch {
+  height: 26px;
+
   .ui-inputswitch-checked .ui-inputswitch-slider {
     background-color: var(--mainColor) !important;
   }

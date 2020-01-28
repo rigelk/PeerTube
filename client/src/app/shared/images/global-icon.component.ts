@@ -70,8 +70,7 @@ export class GlobalIconComponent implements OnInit {
   ) { }
 
   async ngOnInit () {
-    const nativeElement = this.el.nativeElement
-
+    const nativeElement = this.el.nativeElement as HTMLElement
     nativeElement.innerHTML = await this.hooks.wrapFun(
       this.getSVGContent.bind(this),
       { name: this.iconName },

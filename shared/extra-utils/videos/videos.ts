@@ -465,7 +465,7 @@ function rateVideo (url: string, accessToken: string, id: number, rating: string
 function parseTorrentVideo (server: ServerInfo, videoUUID: string, resolution: number) {
   return new Promise<any>((res, rej) => {
     const torrentName = videoUUID + '-' + resolution + '.torrent'
-    const torrentPath = join(root(), 'test' + server.serverNumber, 'torrents', torrentName)
+    const torrentPath = join(root(), 'test' + server.internalServerNumber, 'torrents', torrentName)
     readFile(torrentPath, (err, data) => {
       if (err) return rej(err)
 
@@ -587,18 +587,16 @@ async function completeVideoCheck (
            'File size for resolution ' + file.resolution.label + ' outside confidence interval (' + minSize + '> size <' + maxSize + ')')
       .to.be.above(minSize).and.below(maxSize)
 
-    {
-      await testImage(url, attributes.thumbnailfile || attributes.fixture, videoDetails.thumbnailPath)
-    }
-
-    if (attributes.previewfile) {
-      await testImage(url, attributes.previewfile, videoDetails.previewPath)
-    }
-
     const torrent = await webtorrentAdd(file.magnetUri, true)
     expect(torrent.files).to.be.an('array')
     expect(torrent.files.length).to.equal(1)
     expect(torrent.files[0].path).to.exist.and.to.not.equal('')
+  }
+
+  await testImage(url, attributes.thumbnailfile || attributes.fixture, videoDetails.thumbnailPath)
+
+  if (attributes.previewfile) {
+    await testImage(url, attributes.previewfile, videoDetails.previewPath)
   }
 }
 
@@ -609,13 +607,26 @@ async function videoUUIDToId (url: string, id: number | string) {
   return res.body.id
 }
 
-async function uploadVideoAndGetId (options: { server: ServerInfo, videoName: string, nsfw?: boolean, token?: string }) {
+async function uploadVideoAndGetId (options: {
+  server: ServerInfo,
+  videoName: string,
+  nsfw?: boolean,
+  privacy?: VideoPrivacy,
+  token?: string
+}) {
   const videoAttrs: any = { name: options.videoName }
   if (options.nsfw) videoAttrs.nsfw = options.nsfw
+  if (options.privacy) videoAttrs.privacy = options.privacy
 
   const res = await uploadVideo(options.server.url, options.token || options.server.accessToken, videoAttrs)
 
   return { id: res.body.video.id, uuid: res.body.video.uuid }
+}
+
+async function getLocalIdByUUID (url: string, uuid: string) {
+  const res = await getVideo(url, uuid)
+
+  return res.body.id
 }
 
 // ---------------------------------------------------------------------------
@@ -647,5 +658,6 @@ export {
   completeVideoCheck,
   checkVideoFilesWereRemoved,
   getPlaylistVideos,
-  uploadVideoAndGetId
+  uploadVideoAndGetId,
+  getLocalIdByUUID
 }

@@ -6,6 +6,7 @@ import { peertubeTruncate, root } from './core-utils'
 import { ensureDir, remove, writeFile } from 'fs-extra'
 import * as request from 'request'
 import { createWriteStream } from 'fs'
+import { CONFIG } from '@server/initializers/config'
 
 export type YoutubeDLInfo = {
   name?: string
@@ -24,7 +25,8 @@ const processOptions = {
 
 function getYoutubeDLInfo (url: string, opts?: string[]): Promise<YoutubeDLInfo> {
   return new Promise<YoutubeDLInfo>(async (res, rej) => {
-    const args = opts || [ '-j', '--flat-playlist' ]
+    let args = opts || [ '-j', '--flat-playlist' ]
+    args = wrapWithProxyOptions(args)
 
     const youtubeDL = await safeGetYoutubeDL()
     youtubeDL.getInfo(url, args, processOptions, (err, info) => {
@@ -45,11 +47,11 @@ function downloadYoutubeDLVideo (url: string, timeout: number) {
 
   logger.info('Importing youtubeDL video %s', url)
 
-  const options = [ '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best', '-o', path ]
+  let options = [ '-f', 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best', '-o', path ]
+  options = wrapWithProxyOptions(options)
 
   if (process.env.FFMPEG_PATH) {
-    options.push('--ffmpeg-location')
-    options.push(process.env.FFMPEG_PATH)
+    options = options.concat([ '--ffmpeg-location', process.env.FFMPEG_PATH ])
   }
 
   return new Promise<string>(async (res, rej) => {
@@ -263,4 +265,14 @@ function getCategory (categories: string[]) {
   }
 
   return undefined
+}
+
+function wrapWithProxyOptions (options: string[]) {
+  if (CONFIG.IMPORT.VIDEOS.HTTP.PROXY.ENABLED) {
+    logger.debug('Using proxy for YoutubeDL')
+
+    return [ '--proxy', CONFIG.IMPORT.VIDEOS.HTTP.PROXY.URL ].concat(options)
+  }
+
+  return options
 }
