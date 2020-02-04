@@ -190,6 +190,7 @@
     "chai-json-schema": "^1.5.0",
     "chai-xml": "^0.3.2",
     "concurrently": "^5.0.0",
+    "husky": "^4.2.1",
     "libxmljs": "0.19.7",
     "lint-staged": "^9.2.0",
     "maildev": "^1.0.0-rc3",
