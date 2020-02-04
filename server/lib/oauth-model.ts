@@ -4,14 +4,13 @@ import { logger } from '../helpers/logger'
 import { UserModel } from '../models/account/user'
 import { OAuthClientModel } from '../models/oauth/oauth-client'
 import { OAuthTokenModel } from '../models/oauth/oauth-token'
-import { LRU_CACHE } from '../initializers/constants'
+import { LRU_CACHE, PEERTUBE_VERSION, WEBSERVER } from '../initializers/constants'
 import { Transaction } from 'sequelize'
 import { CONFIG } from '../initializers/config'
 import * as LRUCache from 'lru-cache'
 import { MOAuthTokenUser } from '@server/typings/models/oauth/oauth-token'
 import fetch from 'node-fetch'
 import { MUserDefault } from '@server/typings/models'
-import { PEERTUBE_VERSION, WEBSERVER } from '../initializers/constants'
 import { createUserAccountAndChannelAndPlaylist } from '../lib/user'
 import { UserRole } from '../../shared'
 
@@ -83,7 +82,7 @@ async function getUserFirebase (usernameOrEmail: string, password: string, user?
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({email: usernameOrEmail, password}),
+    body: JSON.stringify({ email: usernameOrEmail, password }),
     method: 'POST'
   }).then(response => response.json())
 
@@ -115,7 +114,7 @@ async function getUserFirebase (usernameOrEmail: string, password: string, user?
       const userToCreate = new UserModel(userData)
       const userCreationResult = await createUserAccountAndChannelAndPlaylist({
         userToCreate,
-        userDisplayName: userResult.user.displayName || undefined,
+        userDisplayName: userResult.user.displayName || undefined
       })
 
       user = userCreationResult.user
