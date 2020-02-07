@@ -10,6 +10,22 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute } from '@angular/router'
 import { ServerConfig } from '@shared/models/server/server-config.model'
 
+// Firebase shim
+// import { app as firebase, firebase as firebaseClass, getFirebaseToken } from '../../../lib/firebase/client'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+const firebaseApp = firebase.initializeApp({
+  apiKey: "AIzaSyAPp8UYTnlz28nfVColD3IXK2olX8Ztbag",
+  authDomain: "bittube-airtime-extension.firebaseapp.com",
+  databaseURL: "https://bittube-airtime-extension.firebaseio.com",
+  projectId: "bittube-airtime-extension",
+  storageBucket: "bittube-airtime-extension.appspot.com",
+  messagingSenderId: "632275942486"
+})
+const firebaseClass = firebase
+const getFirebaseToken = (forceRefresh = false) => (firebaseApp.auth().currentUser ? firebaseApp.auth().currentUser.getIdToken(forceRefresh) : null)
+// ^ TODO: Move to own file
+
 @Component({
   selector: 'my-login',
   templateUrl: './login.component.html',
@@ -57,6 +73,44 @@ export class LoginComponent extends FormReactive implements OnInit {
     })
 
     this.input.nativeElement.focus()
+  }
+
+  social_login (event: Event, network: string) {
+    event.preventDefault()
+
+    let authProvider = null
+
+    switch (network) {
+      case 'facebook':
+        authProvider = new firebaseClass.auth.FacebookAuthProvider()
+        break;
+      case 'google':
+        authProvider = new firebaseClass.auth.GoogleAuthProvider()
+        break;
+      case 'twitter':
+        authProvider = new firebaseClass.auth.TwitterAuthProvider()
+        break;
+      default:
+    }
+
+    firebase.auth().signInWithPopup(authProvider).then(
+      async (result) => {
+        const username = result.user.email
+        const password = await getFirebaseToken()
+
+        this.authService.login(username, password)
+        .subscribe(
+          () => this.redirectService.redirectToPreviousRoute(),
+
+          err => {
+            if (err.message.indexOf('credentials are invalid') !== -1) this.error = this.i18n('Incorrect username or password.')
+            else if (err.message.indexOf('blocked') !== -1) this.error = this.i18n('You account is blocked.')
+            else this.error = err.message
+          }
+        )
+      },
+      err => this.error = err.message
+    );
   }
 
   login () {

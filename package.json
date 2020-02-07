@@ -101,6 +101,7 @@
     "express-oauth-server": "^2.0.0",
     "express-rate-limit": "^4.0.4",
     "express-validator": "^6.1.1",
+    "firebase": "^7.8.0",
     "flat": "^5.0.0",
     "fluent-ffmpeg": "^2.1.0",
     "fs-extra": "^8.0.1",
