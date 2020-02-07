@@ -79,15 +79,15 @@ function getRefreshToken (refreshToken: string) {
 const USERS_CONSTRAINTS_FIELDS = CONSTRAINTS_FIELDS.USERS
 
 async function generateUntakenUsername (username: string, email: string) {
-  const newUsernameFromEmail = `${(email || '').split("@")[0].toLowerCase().replace(/[^a-z0-9._]/g, '').trim()}`
-  let newUsernameFromName = `${(username || newUsernameFromEmail).toLowerCase().replace(/[^a-z0-9._]/g, '').trim()}`
+  const newUsernameFromEmail = `${(email || '').split('@')[0].toLowerCase().replace(/\s/g, '_').replace(/[^a-z0-9._]/g, '').trim()}`
+  let newUsernameFromName = `${(username || newUsernameFromEmail).toLowerCase().replace(/\s/g, '_').replace(/[^a-z0-9._]/g, '').trim()}`
 
   // Commented code so it always uses new username from email.
   // if (newUsernameFromName.length > (USERS_CONSTRAINTS_FIELDS.USERNAME.max - USERS_CONSTRAINTS_FIELDS.USERNAME.min)) {
     newUsernameFromName = newUsernameFromEmail // Use username generated from email if username generated from name exceeds a reasonable length
   // }
 
-  let testUser = {} as any;
+  let testUser = {} as any
   do {
     if (newUsernameFromName.length >= USERS_CONSTRAINTS_FIELDS.USERNAME.min) {
       testUser = await UserModel.loadByUsername(newUsernameFromName) // Check for username conflicts with other users
