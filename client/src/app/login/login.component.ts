@@ -9,22 +9,7 @@ import { LoginValidatorsService } from '@app/shared/forms/form-validators/login-
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute } from '@angular/router'
 import { ServerConfig } from '@shared/models/server/server-config.model'
-
-// Firebase shim
-// import { app as firebase, firebase as firebaseClass, getFirebaseToken } from '../../../lib/firebase/client'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
-const firebaseApp = firebase.initializeApp({
-  apiKey: "AIzaSyAPp8UYTnlz28nfVColD3IXK2olX8Ztbag",
-  authDomain: "bittube-airtime-extension.firebaseapp.com",
-  databaseURL: "https://bittube-airtime-extension.firebaseio.com",
-  projectId: "bittube-airtime-extension",
-  storageBucket: "bittube-airtime-extension.appspot.com",
-  messagingSenderId: "632275942486"
-})
-const firebaseClass = firebase
-const getFirebaseToken = (forceRefresh = false) => (firebaseApp.auth().currentUser ? firebaseApp.auth().currentUser.getIdToken(forceRefresh) : null)
-// ^ TODO: Move to own file
+import { firebaseApp, firebaseClass, getFirebaseToken } from '../core/firebase'
 
 @Component({
   selector: 'my-login',
@@ -83,17 +68,17 @@ export class LoginComponent extends FormReactive implements OnInit {
     switch (network) {
       case 'facebook':
         authProvider = new firebaseClass.auth.FacebookAuthProvider()
-        break;
+        break
       case 'google':
         authProvider = new firebaseClass.auth.GoogleAuthProvider()
-        break;
+        break
       case 'twitter':
         authProvider = new firebaseClass.auth.TwitterAuthProvider()
-        break;
+        break
       default:
     }
 
-    firebase.auth().signInWithPopup(authProvider).then(
+    firebaseApp.auth().signInWithPopup(authProvider).then(
       async (result) => {
         const username = result.user.email
         const password = await getFirebaseToken()
@@ -110,7 +95,7 @@ export class LoginComponent extends FormReactive implements OnInit {
         )
       },
       err => this.error = err.message
-    );
+    )
   }
 
   login () {
