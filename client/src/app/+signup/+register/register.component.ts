@@ -9,6 +9,7 @@ import { InstanceService } from '@app/shared/instance/instance.service'
 import { HooksService } from '@app/core/plugins/hooks.service'
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap'
 import { ActivatedRoute } from '@angular/router'
+import { firebaseApp } from '../../core/firebase'
 
 @Component({
   selector: 'my-register',
@@ -116,6 +117,12 @@ export class RegisterComponent implements OnInit {
     this.userService.signup(body).subscribe(
       () => {
         this.signupDone = true
+
+        firebaseApp.auth().createUserWithEmailAndPassword(body.email, body.password).then(
+          () => firebaseApp.auth().currentUser.updateProfile({ displayName: body.displayName })
+        ).catch(
+          (error) => console.error(error)
+        )
 
         if (this.requiresEmailVerification) {
           this.info = this.i18n('Now please check your emails to verify your account and complete signup.')
