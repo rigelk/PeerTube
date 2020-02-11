@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.3
+
+### BitTube First stable release
+
+  * Fixed default theme for new users
+  * Tweaking release script to fit our needings
+
+
 ## v2.1.0
 
 **Since v2.0.0**
