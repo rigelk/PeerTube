@@ -100,24 +100,25 @@ rm -f "./client/dist/embed-stats.json"
   git push origin --tag
 
   if [ -z "$github_prerelease_option" ]; then
-    github-release release --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$version" --description "$changelog"
+    github-release release --owner ipbc-dev --repo BitTubeVid --tag "$version" --name "$version" --body "$changelog"
   else
-    github-release release --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$version" --description "$changelog" "$github_prerelease_option"
+    github-release release --owner ipbc-dev --repo BitTubeVid --tag "$version" --name "$version" --body "$changelog" "$github_prerelease_option"
   fi
 
-  github-release upload --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$zip_name" --file "$zip_name"
-  # github-release upload --user 'ipbc-dev' --repo BitTubeVid --tag "$version" --name "$zip_name.asc" --file "$zip_name.asc"
-  github-release upload --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$tar_name" --file "$tar_name"
-  # github-release upload --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$tar_name.asc" --file "$tar_name.asc"
+  github-release upload --owner ipbc-dev --repo BitTubeVid --tag "$version" --name "$zip_name" --file "$zip_name"
+  # github-release upload --owner 'ipbc-dev' --repo BitTubeVid --tag "$version" --name "$zip_name.asc" --file "$zip_name.asc"
+  github-release upload --owner ipbc-dev --repo BitTubeVid --tag "$version" --name "$tar_name" --file "$tar_name"
+  # github-release upload --owner "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$tar_name.asc" --file "$tar_name.asc"
 
+  git push --set-upstream origin "$branch"
   git push origin "$branch"
 
   # Only update master if it is not a pre release
-  if [ -z "$github_prerelease_option" ]; then
-      # Update master branch
-      git checkout master
-      git merge "$branch"
-      git push origin master
-      git checkout "$branch"
-  fi
+  # if [ -z "$github_prerelease_option" ]; then
+  #     # Update master branch
+  #     git checkout master
+  #     git merge "$branch"
+  #     git push origin master
+  #     git checkout "$branch"
+  # fi
 )
