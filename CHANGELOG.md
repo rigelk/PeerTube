@@ -4,9 +4,7 @@
 
 ### BitTube first stable release
 
-**Since v2.1.0**
-
-  * Based on Peertube V2.1.0 (stable)
+  * Based on Peertube V2.1.0 ( https://github.com/Chocobozzz/PeerTube/tree/release/2.1.0 )
   * Fixed default theme for new users
   * Tweaking release script to fit our needings
 
