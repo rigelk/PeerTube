@@ -24,7 +24,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit -1
 fi
 
-maintainer_public_key=${MAINTAINER_GPG:-"583A612D890159BE"}
+# maintainer_public_key=${MAINTAINER_GPG:-"583A612D890159BE"}
 
 branch=$(git symbolic-ref --short -q HEAD)
 if [ "$branch" != "develop" ] && [[ "$branch" != release/* ]]; then
@@ -39,9 +39,9 @@ if [[ "$version" = *"-alpha."* ]] || [[ "$version" = *"-beta."* ]] || [[ "$versi
   github_prerelease_option="--pre-release"
 fi
 
-directory_name="peertube-$version"
-zip_name="peertube-$version.zip"
-tar_name="peertube-$version.tar.xz"
+directory_name="bittubevid-$version"
+zip_name="bittubevid-$version.zip"
+tar_name="bittubevid-$version.tar.xz"
 
 changelog=$(awk -v version="$version" '/## v/ { printit = $2 == version }; printit;' CHANGELOG.md | grep -v "## $version" | sed '1{/^$/d}')
 
@@ -63,7 +63,8 @@ npm version -f --no-git-tag-version --no-commit-hooks "$1"
 ./scripts/openapi-peertube-version.sh
 
 git commit package.json client/package.json ./support/doc/api/openapi.yaml -m "Bumped to version $version"
-git tag -s -a "$version" -m "$version"
+# git tag -s -a "$version" -m "$version"
+git tag -a "$version" -m "$version"
 
 npm run build
 rm -f "./client/dist/en_US/stats.json"
@@ -82,13 +83,13 @@ rm -f "./client/dist/embed-stats.json"
 
   # temporary setup
   cd ..
-  ln -s "PeerTube" "$directory_name"
+  ln -s "BitTubeVid" "$directory_name"
 
   # archive creation + signing
-  zip -r "PeerTube/$zip_name" "${directories_to_archive[@]}"
-  gpg --armor --detach-sign -u "$maintainer_public_key" "PeerTube/$zip_name"
-  XZ_OPT=-e9 tar cfJ "PeerTube/$tar_name" "${directories_to_archive[@]}"
-  gpg --armor --detach-sign -u "$maintainer_public_key" "PeerTube/$tar_name"
+  zip -r "BitTubeVid/$zip_name" "${directories_to_archive[@]}"
+  # gpg --armor --detach-sign -u "$maintainer_public_key" "BitTubeVid/$zip_name"
+  XZ_OPT=-e9 tar cfJ "BitTubeVid/$tar_name" "${directories_to_archive[@]}"
+  # gpg --armor --detach-sign -u "$maintainer_public_key" "BitTubeVid/$tar_name"
 
   # temporary setup destruction
   rm "$directory_name"
@@ -98,17 +99,20 @@ rm -f "./client/dist/embed-stats.json"
 (
   git push origin --tag
 
+# In order to use next commands you will need to install go, and then github-release from https://github.com/aktau/github-release
+# Also, you might need to link the command with the path
   if [ -z "$github_prerelease_option" ]; then
-    github-release release --user chocobozzz --repo peertube --tag "$version" --name "$version" --description "$changelog"
+    github-release release --user ipbc-dev --repo BitTubeVid --tag "$version" --name "BitTubeVid $version" --description "$changelog"
   else
-    github-release release --user chocobozzz --repo peertube --tag "$version" --name "$version" --description "$changelog" "$github_prerelease_option"
+    github-release release --user ipbc-dev --repo BitTubeVid --tag "$version" --name "BitTubeVid $version" --description "$changelog" "$github_prerelease_option"
   fi
 
-  github-release upload --user chocobozzz --repo peertube --tag "$version" --name "$zip_name" --file "$zip_name"
-  github-release upload --user chocobozzz --repo peertube --tag "$version" --name "$zip_name.asc" --file "$zip_name.asc"
-  github-release upload --user chocobozzz --repo peertube --tag "$version" --name "$tar_name" --file "$tar_name"
-  github-release upload --user chocobozzz --repo peertube --tag "$version" --name "$tar_name.asc" --file "$tar_name.asc"
+  github-release upload --user ipbc-dev --repo BitTubeVid --tag "$version" --name "$zip_name" --file "$zip_name"
+  # github-release upload --user 'ipbc-dev' --repo BitTubeVid --tag "$version" --name "$zip_name.asc" --file "$zip_name.asc"
+  github-release upload --user ipbc-dev --repo BitTubeVid --tag "$version" --name "$tar_name" --file "$tar_name"
+  # github-release upload --user "ipbc-dev" --repo BitTubeVid --tag "$version" --name "$tar_name.asc" --file "$tar_name.asc"
 
+  git push --set-upstream origin "$branch"
   git push origin "$branch"
 
   # Only update master if it is not a pre release
