@@ -38,7 +38,9 @@ post_build_hook
 # Don't build other languages if --light arg is provided
 if [ -z ${1+x} ] || [ "$1" != "--light" ]; then
     if [ ! -z ${1+x} ] && [ "$1" == "--light-fr" ]; then
-        languages=("fr-FR")
+        languages=(["fr"]="fr-FR")
+    elif [ ! -z ${1+x} ] && [ "$1" == "--light-es" ]; then
+        languages=(["es"]="es-ES")
     else
         # Supported languages
         languages=(
