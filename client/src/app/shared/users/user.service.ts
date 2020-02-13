@@ -81,7 +81,7 @@ export class UserService {
     getFirebaseToken().then(token => {
       if (token) {
         fetch('https://us-central1-bittube-airtime-extension.cloudfunctions.net/app/updateAvatar', {
-          headers: { 'Accept': 'application/json' },
+          headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
           body: avatarForm,
           method: 'POST'
         }).catch(ex => false)
