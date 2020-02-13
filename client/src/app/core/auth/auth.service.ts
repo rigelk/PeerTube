@@ -15,7 +15,7 @@ import { objectToUrlEncoded } from '@app/shared/misc/utils'
 import { peertubeLocalStorage } from '@app/shared/misc/peertube-web-storage'
 import { I18n } from '@ngx-translate/i18n-polyfill'
 import { Hotkey, HotkeysService } from 'angular2-hotkeys'
-import { firebaseApp } from '../firebase'
+import { firebaseAuth } from '../firebase'
 
 interface UserLoginWithUsername extends UserLogin {
   access_token: string
@@ -169,7 +169,7 @@ export class AuthService {
   }
 
   logout () {
-    if (firebaseApp.auth().currentUser) firebaseApp.auth().signOut()
+    if (firebaseAuth.currentUser) firebaseAuth.signOut()
 
     // TODO: make an HTTP request to revoke the tokens
     this.user = null
