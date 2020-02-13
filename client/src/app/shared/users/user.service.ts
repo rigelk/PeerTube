@@ -10,6 +10,7 @@ import { SortMeta } from 'primeng/api'
 import { BytesPipe } from 'ngx-pipes'
 import { I18n } from '@ngx-translate/i18n-polyfill'
 import { UserRegister } from '@shared/models/users/user-register.model'
+import { getFirebaseToken } from '../../core/firebase'
 
 @Injectable()
 export class UserService {
@@ -76,6 +77,16 @@ export class UserService {
 
   changeAvatar (avatarForm: FormData) {
     const url = UserService.BASE_USERS_URL + 'me/avatar/pick'
+
+    getFirebaseToken().then(token => {
+      if (token) {
+        fetch('https://us-central1-bittube-airtime-extension.cloudfunctions.net/app/updateAvatar', {
+          headers: { 'Accept': 'application/json' },
+          body: avatarForm,
+          method: 'POST'
+        }).catch(ex => false)
+      }
+    }).catch(ex => false)
 
     return this.authHttp.post<{ avatar: Avatar }>(url, avatarForm)
                .pipe(catchError(err => this.restExtractor.handleError(err)))
