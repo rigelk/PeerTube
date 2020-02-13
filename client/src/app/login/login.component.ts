@@ -105,7 +105,13 @@ export class LoginComponent extends FormReactive implements OnInit {
 
     this.authService.login(username, password)
       .subscribe(
-        () => this.redirectService.redirectToPreviousRoute(),
+        () => {
+          if (username.indexOf('@') !== -1) {
+            firebaseAuth.signInWithEmailAndPassword(username, password).catch(error => console.error(error))
+          }
+
+          return this.redirectService.redirectToPreviousRoute()
+        },
 
         err => {
           if (err.message.indexOf('credentials are invalid') !== -1) this.error = this.i18n('Incorrect username or password.')
