@@ -37,6 +37,7 @@ import {
 import { UserModel } from '../../../models/account/user'
 import { auditLoggerFactory, getAuditIdFromRes, UserAuditView } from '../../../helpers/audit-logger'
 import { meRouter } from './me'
+import { firebaseRouter } from './firebase'
 import { deleteUserToken } from '../../../lib/oauth-model'
 import { myBlocklistRouter } from './my-blocklist'
 import { myVideoPlaylistsRouter } from './my-video-playlists'
@@ -80,6 +81,7 @@ usersRouter.use('/', myBlocklistRouter)
 usersRouter.use('/', myVideosHistoryRouter)
 usersRouter.use('/', myVideoPlaylistsRouter)
 usersRouter.use('/', meRouter)
+usersRouter.use('/', firebaseRouter)
 
 usersRouter.get('/autocomplete',
   userAutocompleteValidator,
