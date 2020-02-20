@@ -1,7 +1,7 @@
 <div align="center">
   <!-- <h1>BitTube Video</h1> -->
   <a href="https://bittube.app">
-    <img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/bittubeLogoandLetters.png" alt="BitTube" width="300px">
+    <img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/bittubeLogoandLetters.png" alt="BitTube">
   </a>
 </div>
 
