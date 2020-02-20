@@ -81,12 +81,9 @@ But one organization hosting PeerTube alone may not have enough money to pay for
 
 To learn more, see:
 * This [two-minute video](https://framatube.org/videos/watch/217eefeb-883d-45be-b7fc-a788ad8507d3) (hosted on PeerTube) explaining what PeerTube is and how it works
-* PeerTube's project homepage, [joinpeertube.org](https://joinpeertube.org)
-* Demonstration instances:
-  * [peertube.cpy.re](https://peertube.cpy.re)
-  * [peertube2.cpy.re](https://peertube2.cpy.re)
-  * [peertube3.cpy.re](https://peertube3.cpy.re)
-* This [video](https://peertube.cpy.re/videos/watch/da2b08d4-a242-4170-b32a-4ec8cbdca701) demonstrating the communication between PeerTube and [Mastodon](https://github.com/tootsuite/mastodon) (a decentralized Twitter alternative)
+* BitTube's project homepage, [bittube.app](https://bittube.app)
+* Demonstration instance:
+  * [bittube.video](https://bittube.video)
 
 :sparkles: Features
 ----------------------------------------------------------------
@@ -99,20 +96,20 @@ Just upload your videos, and be sure they will stream anywhere. Add a descriptio
 
 ---
 
-<img src="https://lutim.cpy.re/cxWccUK7.png" align="right" height="200px"/>
+<img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/subscribefollow.png" align="right" height="200px"/>
 
 <h3 align="right">Keep in touch with video creators</h3>
 <p align="right">
-Follow your favorite channels from PeerTube or really any other place. No need to have an account on the instance you watched a video to follow its author, you can do all of that from the Fediverse (Mastodon, Pleroma, and plenty others), or just with good ol' RSS.
+Follow your favorite channels from BitTube or really any other place. No need to have an account on the instance you watched a video to follow its author, you can do all of that from the Fediverse (Mastodon, Pleroma, and plenty others), or just with good ol' RSS.
 </p>
 
 ---
 
-<img src="https://lutim.cpy.re/K07EhFbt.png" align="left" height="200px"/>
+<img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/friendlyUI.png" align="left" height="200px"/>
 
 <h3 align="left">An interface to call home</h3>
 <p align="left">
-Be it as a user or an instance administrator, you can decide what your experience will be like. Don't like the colors? They are easy to change. Don't want to list videos of an instance but let your users subscribe to them? Don't like the regular web client? All of that can be changed, and much more. No UX dark pattern, no mining your data, no video recommendation bullshit™.
+Be it as a user or an instance administrator, you can decide what your experience will be like. Don't like the colors? They are easy to change (look for BitTube themes!). Don't want to list videos of an instance but let your users subscribe to them? Don't like the regular web client? All of that can be changed, and much more. No UX dark pattern, no mining your data, no video recommendation bullshit™.
 </p>
 
 ---
@@ -136,10 +133,18 @@ guide](https://github.com/Chocobozzz/PeerTube/blob/develop/.github/CONTRIBUTING.
 You can also join the cheerful bunch that makes our community:
 
 * Chat<a name="contact"></a>:
-  * IRC : **[#peertube on chat.freenode.net:6697](https://kiwiirc.com/client/irc.freenode.net/#peertube)**
-  * Matrix (bridged on IRC and [Discord](https://discord.gg/wj8DDUT)) : **[#peertube:matrix.org](https://matrix.to/#/#peertube:matrix.org)**
-* Forum:
-  * Framacolibri: [https://framacolibri.org/c/peertube](https://framacolibri.org/c/peertube)
+  <!-- * IRC : **[#peertube on chat.freenode.net:6697](https://kiwiirc.com/client/irc.freenode.net/#peertube)**
+  * Matrix (bridged on IRC and [Discord](https://discord.gg/wj8DDUT)) : **[#peertube:matrix.org](https://matrix.to/#/#peertube:matrix.org)** -->
+  * Discord : **[BitTube Community](https://discordapp.com/invite/fBNQRQV)**
+  * Telegram: **[BitTube Telegram](https://t.me/ipbcenglish)**
+
+* HelpDesk:
+  * BitTubeApp: **[bittube.app](https://bittube.app)**
+
+* Social: 
+  * Twitter: **[@BitTubeApp](https://twitter.com/BitTubeApp)**
+  * Facebook: **[BitTube Official](https://www.facebook.com/bit.tube.official/)**
+  * Reddit: **[BitTube](https://www.reddit.com/r/BitTube/)**
     
 Feel free to reach out if you have any questions or ideas! :speech_balloon:
 
@@ -155,14 +160,14 @@ Feel free to reach out if you have any questions or ideas! :speech_balloon:
   * **yarn >= 1.x**
   * **FFmpeg >= 3.x**
 
-See the [production guide](https://github.com/Chocobozzz/PeerTube/blob/develop/support/doc/production.md), which is the recommended way to install or upgrade PeerTube. For hardware requirements, see [Should I have a big server to run PeerTube?](https://github.com/Chocobozzz/PeerTube/blob/develop/FAQ.md#should-i-have-a-big-server-to-run-peertube) in the FAQ.
+See the [production guide](https://github.com/ipbc-dev/BitTubeVid/blob/tube/support/doc/production.md), which is the recommended way to install or upgrade BitTube. For hardware requirements, see [Should I have a big server to run BitTube?](https://github.com/ipbc-dev/BitTubeVid/blob/tube/FAQ.md#should-i-have-a-big-server-to-run-peertube) in the FAQ.
 
 See the [community packages](https://docs.joinpeertube.org/#/install-unofficial), which cover various platforms (including [YunoHost](https://install-app.yunohost.org/?app=peertube) and [Docker](https://github.com/Chocobozzz/PeerTube/blob/develop/support/doc/docker.md)).
 
 :book: Documentation
 ----------------------------------------------------------------
 
-If you have a question, please try to find the answer in the [FAQ](https://github.com/Chocobozzz/PeerTube/blob/develop/FAQ.md) first.
+If you have a question, please try to find the answer in the [FAQ](https://github.com/ipbc-dev/BitTubeVid/blob/tube/FAQ.md) first.
 
 ### User documentation
 
@@ -170,22 +175,22 @@ See the [user documentation](https://docs.joinpeertube.org/#/use-setup-account).
 
 ### Admin documentation
 
-See [how to create your own instance](https://github.com/Chocobozzz/PeerTube/blob/develop/README.md#package-create-your-own-instance).
+See [how to create your own instance](https://github.com/ipbc-dev/BitTubeVid#package-create-your-own-instance).
 
 See the more general [admin documentation](https://docs.joinpeertube.org/#/admin-following-instances).
 
 #### Tools
 
- * [Import videos (YouTube, Dailymotion, Vimeo...)](https://github.com/Chocobozzz/PeerTube/blob/develop/support/doc/tools.md)
- * [Upload videos from the CLI](https://github.com/Chocobozzz/PeerTube/blob/support/doc/tools.md)
- * [Admin server tools (create transcoding jobs, prune storage...)](https://github.com/Chocobozzz/PeerTube/blob/support/doc/tools.md#server-tools)
+ * [Import videos (YouTube, Dailymotion, Vimeo...)](https://github.com/ipbc-dev/BitTubeVid/blob/tube/support/doc/tools.md)
+ * [Upload videos from the CLI](https://github.com/ipbc-dev/BitTubeVid/blob/tube/support/doc/tools.md#cli-wrapper)
+ * [Admin server tools (create transcoding jobs, prune storage...)](https://github.com/ipbc-dev/BitTubeVid/blob/tube/support/doc/tools.md#server-tools)
 
 ### Technical documentation
 
 See the [architecture blueprint](https://docs.joinpeertube.org/#/contribute-architecture) for a more detailed explanation of the architectural choices.
 
 See our REST API documentation:
-  * OpenAPI 3.0.0 schema: [/support/doc/api/openapi.yaml](https://github.com/Chocobozzz/PeerTube/blob/support/doc/api/openapi.yaml)
+  * OpenAPI 3.0.0 schema: [/support/doc/api/openapi.yaml](https://github.com/ipbc-dev/BitTubeVid/blob/tube/support/doc/api/openapi.yaml)
   * Spec explorer: [docs.joinpeertube.org/api-rest-reference.html](https://docs.joinpeertube.org/api-rest-reference.html)
 
 See our [ActivityPub documentation](https://docs.joinpeertube.org/#/api-activitypub).
