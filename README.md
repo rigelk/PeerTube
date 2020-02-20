@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://bittube.app">
     <img src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube">
-    <h1>BitTube</h1>
+    BitTube Video
   </a>
 </h1>
 
@@ -24,6 +24,7 @@ Be part of a network of multiple small federated, interoperable video hosting pr
 <p align="center">
   <a href="https://bittube.app">
     <img width="150px" src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube logo"/>
+    <img width="150px" src="https://lutim.cpy.re/FeRgHH8r.png" alt="Framasoft logo"/>
   </a>
 </p>
 
