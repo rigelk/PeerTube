@@ -1,15 +1,15 @@
 <h1 align="center">
-  <a href="https://joinpeertube.org">
-    <img src="https://joinpeertube.org/img/brand.png" alt="PeerTube">
+  <a href="https://bittube.app">
+    <img src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube">
   </a>
 </h1>
 
 <p align=center>
-  <strong><a href="https://joinpeertube.org">Website</a></strong>
+  <strong><a href="https://bittube.app">Website</a></strong>
   | <strong><a href="https://instances.joinpeertube.org">Join an instance</a></strong>
   | <strong><a href="#package-create-your-own-instance">Create an instance</a></strong>
   | <strong><a href="#contact">Chat with us</a></strong>
-  | <strong><a href="https://framasoft.org/en/#soutenir">Donate</a></strong>
+  <!-- | <strong><a href="https://framasoft.org/en/#soutenir">Donate</a></strong> -->
 </p>
 
 <p align="center">
@@ -17,12 +17,12 @@ Be part of a network of multiple small federated, interoperable video hosting pr
 </p>
 
 <p align="center">
-  <strong>Developed with &#10084; by <a href="https://framasoft.org">Framasoft</a></strong>
+  <strong>Developed with &#10084; by <a href="https://bittube.app">BitTube</a> and <a href="https://framasoft.org">Framasoft</a></strong>
 </p>
 
 <p align="center">
-  <a href="https://framasoft.org">
-    <img width="150px" src="https://lutim.cpy.re/FeRgHH8r.png" alt="Framasoft logo"/>
+  <a href="https://bittube.app">
+    <img width="150px" src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube logo"/>
   </a>
 </p>
 
@@ -35,9 +35,9 @@ Be part of a network of multiple small federated, interoperable video hosting pr
     <img src="https://david-dm.org/Chocobozzz/PeerTube/dev-status.svg?path=client" alt="devDependency Status" />
   </a>
   
-  <a href="https://automate.browserstack.com/public-build/cW5mYW43VDNUR1Jrb0Y5TnVoaC85Tk84SVhzSU9rS0ppWWJJYUVlRzVQRT0tLW9tVGIvK2ZmOGRld3lVVFRYTFM4aEE9PQ==--591b0056e00a2d1cbdfbcfa324634046132008ec">
+  <!-- <a href="https://automate.browserstack.com/public-build/cW5mYW43VDNUR1Jrb0Y5TnVoaC85Tk84SVhzSU9rS0ppWWJJYUVlRzVQRT0tLW9tVGIvK2ZmOGRld3lVVFRYTFM4aEE9PQ==--591b0056e00a2d1cbdfbcfa324634046132008ec">
     <img src="https://automate.browserstack.com/badge.svg?badge_key=cW5mYW43VDNUR1Jrb0Y5TnVoaC85Tk84SVhzSU9rS0ppWWJJYUVlRzVQRT0tLW9tVGIvK2ZmOGRld3lVVFRYTFM4aEE9PQ==--591b0056e00a2d1cbdfbcfa324634046132008ec"/>
-  </a>
+  </a> -->
 </p>
 
 <p align="center">
@@ -65,15 +65,17 @@ Be part of a network of multiple small federated, interoperable video hosting pr
 <br />
 
 <p align="center">
-  <a href="https://framatube.org/videos/watch/217eefeb-883d-45be-b7fc-a788ad8507d3">
-    <img src="http://lutim.cpy.re/9CLXh0Ys.png" alt="screenshot" />
+  <a href="https://bittube.video/videos/watch/aedd1c35-ce03-44aa-8fb1-bc4fe45d1023">
+    <img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/bittubePlatform.png" alt="screenshot" />
   </a>
 </p>
 
 Introduction
 ----------------------------------------------------------------
 
-PeerTube is a free, decentralized and federated video platform developed as an alternative to other platforms that centralize our data and attention, such as YouTube, Dailymotion or Vimeo. :clapper: But one organization hosting PeerTube alone may not have enough money to pay for bandwidth and video storage of its servers, all servers of PeerTube are interoperable as a federated network, and non-PeerTube servers can be part of the larger Vidiverse (federated video network) by talking our implementation of ActivityPub. Video load is reduced thanks to P2P (BitTorrent) in the web browser via <a href="https://github.com/webtorrent/webtorrent">WebTorrent</a>.
+BitTube is a free, decentralized and federated video platform developed as an alternative to other platforms that centralize our data and attention, such as YouTube, Dailymotion or Vimeo. :clapper: 
+It is a part of the PeerTube federation, with it's own functionality over it.
+But one organization hosting PeerTube alone may not have enough money to pay for bandwidth and video storage of its servers, all servers of PeerTube are interoperable as a federated network, and non-PeerTube servers can be part of the larger Vidiverse (federated video network) by talking our implementation of ActivityPub. Video load is reduced thanks to P2P (BitTorrent) in the web browser via <a href="https://github.com/webtorrent/webtorrent">WebTorrent</a>.
 
 To learn more, see:
 * This [two-minute video](https://framatube.org/videos/watch/217eefeb-883d-45be-b7fc-a788ad8507d3) (hosted on PeerTube) explaining what PeerTube is and how it works
@@ -196,7 +198,7 @@ Quonfucius, IP Solution, \_Laure\_, @lex666, 0x010C, 3dsman, 3rw4n-G3D, aallrd, 
 
 ## License
 
-Copyright (C) 2015-2019 PeerTube Contributors
+Copyright (C) 2015-2020 BitTube Contributors
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
