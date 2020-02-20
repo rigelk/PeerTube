@@ -1,7 +1,7 @@
 <div align="center">
-  <h1>BitTube Video</h1>
+  <!-- <h1>BitTube Video</h1> -->
   <a href="https://bittube.app">
-    <!-- <img src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube" width="300px"> -->
+    <img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/bittubeLogoandLetters.png" alt="BitTube" width="300px">
   </a>
 </div>
 
@@ -119,7 +119,7 @@ Be it as a user or an instance administrator, you can decide what your experienc
 In addition to visitors using WebTorrent to share the load among them, instances can help each other by caching one another's videos. This way even small instances have a way to show content to a wider audience, as they will be shouldered by friend instances (more about that in our <a href="https://docs.joinpeertube.org/#/contribute-architecture?id=redundancy-between-instances">redundancy guide</a>).
 </p>
 <p align="right">
-Content creators can get help from their viewers in the simplest way possible: a support button showing a message linking to their donation accounts or really anything else. No more pay-per-view and advertisements that hurt visitors and <strike>incentivize</strike> alter creativity (more about that in our <a href="https://github.com/Chocobozzz/PeerTube/blob/develop/FAQ.md">FAQ</a>).
+Content creators can get help from their viewers in the simplest way possible: a support button showing a message linking to their donation accounts or really anything else. No more pay-per-view and advertisements that hurt visitors and <strike>incentivize</strike> alter creativity (more about that in our <a href="https://github.com/ipbc-dev/BitTubeVid/blob/tube/FAQ.md">FAQ</a>).
 </p>
 
 :raised_hands: Contributing
