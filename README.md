@@ -91,7 +91,7 @@ To learn more, see:
 :sparkles: Features
 ----------------------------------------------------------------
 
-<img src="https://lutim.cpy.re/AHbctLjn.png" align="left" height="300px"/>
+<img src="https://raw.githubusercontent.com/ipbc-dev/BitTubeVid/tube/support/doc/images/bittubePlatform.png" align="left" height="300px"/>
 <h3 align="left">Video streaming</h3>
 <p align="left">
 Just upload your videos, and be sure they will stream anywhere. Add a description, some tags and your video will be discoverable by the entire video fediverse, not just your instance. You can even embed a player on your favorite website!
