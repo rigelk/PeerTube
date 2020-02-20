@@ -1,8 +1,8 @@
 <div display="inline-block">
   <a href="https://bittube.app">
     <img src="https://avatars2.githubusercontent.com/u/34477436?s=460&v=4" alt="BitTube" width="300px">
-    <h1>BitTube Video</h1>
   </a>
+  <h1>BitTube Video</h1>
 </div>
 
 <p align=center>
