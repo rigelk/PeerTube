@@ -127,8 +127,8 @@ Content creators can get help from their viewers in the simplest way possible: a
 
 You don't need to be a coder to help!
 
-You can give us your feedback, report bugs, help us translate PeerTube, write documentation, and more. Check out the [contributing
-guide](https://github.com/Chocobozzz/PeerTube/blob/develop/.github/CONTRIBUTING.md) to know how, it takes less than 2 minutes to get started. :wink:
+You can give us your feedback, report bugs, help us translate BitTube, write documentation, and more. Check out the [contributing
+guide](https://github.com/ipbc-dev/BitTubeVid/blob/tube/.github/CONTRIBUTING.md) to know how, it takes less than 2 minutes to get started. :wink:
 
 You can also join the cheerful bunch that makes our community:
 
