@@ -130,7 +130,7 @@ To check if your BitTorrent client supports WebTorrent you can see this issue: h
 
 
 ## Why host on GitHub?
-The project has initially been hosted on GitHub by ipbc-dev. 
+The project has initially been hosted on GitHub by ipbc-dev. We will keep it here as it is more accesible to everybody.
 
 
 ## Are you going to use the Steem blockchain?
