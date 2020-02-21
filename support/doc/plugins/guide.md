@@ -344,7 +344,7 @@ Translation files are just objects, with the english sentence as the key and the
 ### Test your plugin/theme
 [comment]: <> (question , github)
 You'll need to have a local BitTube instance:
- * Follow the [dev prerequisites](https://github.com/Chocobozzz/PeerTube/blob/develop/.github/CONTRIBUTING.md#prerequisites) 
+ * Follow the [dev prerequisites](https://github.com/ipbc-dev/BitTubeVid/blob/develop/.github/CONTRIBUTING.md#prerequisites) 
  (to clone the repository, install dependencies and prepare the database)
  * Build PeerTube (`--light` to only build the english language): 
 
