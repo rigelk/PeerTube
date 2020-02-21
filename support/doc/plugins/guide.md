@@ -432,4 +432,4 @@ If you want to create an antispam/moderation plugin, you could use the following
  
 ### Other plugin examples
 [comment]: <> (question , url)
-You can take a look to "official" BitTube plugins if you want to take inspiration from them: https://framagit.org/framasoft/peertube/official-plugins
+You can take a look to "official" PeerTube plugins if you want to take inspiration from them: https://framagit.org/framasoft/peertube/official-plugins
