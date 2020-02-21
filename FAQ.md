@@ -129,7 +129,7 @@ The reason is they connect to peers through WebRTC whereas your BitTorrent clien
 To check if your BitTorrent client supports WebTorrent you can see this issue: https://github.com/webtorrent/webtorrent/issues/369
 
 
-## Why host on GitHub and Framagit?
+## Why host on GitHub?
 The project has initially been hosted on GitHub by ipbc-dev. 
 
 
