@@ -413,7 +413,7 @@ registerHook({
   }
 })
 ```
-  * Don't try to require parent PeerTube modules, only use `peertubeHelpers`. If you need another helper or a specific hook, please [create an issue](https://github.com/Chocobozzz/PeerTube/issues/new)
+  * Don't try to require parent PeerTube modules, only use `peertubeHelpers`. If you need another helper or a specific hook, please [create an issue](https://github.com/ipbc-dev/BitTubeVid/issues/new)
   * Don't use PeerTube dependencies. Use your own :) 
 [comment]: <> (question up of this line , github https://github.com/Chocobozzz/PeerTube/issues/new )
 [comment]: <> (question , code example)
