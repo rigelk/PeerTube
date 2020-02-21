@@ -5,7 +5,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Why did you create BitTu?](#why-did-you-create-BitTube)
+- [Why did you create BitTube?](#why-did-you-create-BitTube)
 - [I don't like the name "BitTube"](#i-dont-like-the-name-BitTube)
 - [If nobody watches a video, is it seeded?](#if-nobody-watches-a-video-is-it-seeded)
 - [What is WebSeed?](#what-is-webseed)
