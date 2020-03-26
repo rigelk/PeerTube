@@ -205,6 +205,7 @@ Quonfucius, IP Solution, \_Laure\_, @lex666, 0x010C, 3dsman, 3rw4n-G3D, aallrd, 
 
 ## License
 
+Copyright (C) 2015-2020 PeerTube Contributors
 Copyright (C) 2015-2020 BitTube Contributors
 
 This program is free software: you can redistribute it and/or modify
