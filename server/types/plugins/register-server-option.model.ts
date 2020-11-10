@@ -10,10 +10,12 @@ import {
   PluginVideoLanguageManager,
   PluginVideoLicenceManager,
   PluginVideoPrivacyManager,
-  RegisterServerHookOptions,
   RegisterServerSettingOptions,
   VideoBlacklistCreate
 } from '@shared/models'
+import {
+  RegisterServerHookOptions
+} from '../../types/plugins'
 import { MVideoThumbnail } from '../models'
 import {
   RegisterServerAuthExternalOptions,

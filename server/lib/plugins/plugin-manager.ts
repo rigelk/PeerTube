@@ -2,7 +2,7 @@ import { createReadStream, createWriteStream } from 'fs'
 import { outputFile, readJSON } from 'fs-extra'
 import { basename, join } from 'path'
 import { MOAuthTokenUser, MUser } from '@server/types/models'
-import { RegisterServerHookOptions } from '@shared/models/plugins/register-server-hook.model'
+import { RegisterServerHookOptions } from '@server/types/plugins/register-server-hook.model'
 import { getHookType, internalRunHook } from '../../../shared/core-utils/plugins/hooks'
 import {
   ClientScript,
@@ -11,7 +11,7 @@ import {
 } from '../../../shared/models/plugins/plugin-package-json.model'
 import { PluginTranslation } from '../../../shared/models/plugins/plugin-translation.model'
 import { PluginType } from '../../../shared/models/plugins/plugin.type'
-import { ServerHook, ServerHookName } from '../../../shared/models/plugins/server-hook.model'
+import { ServerHook, ServerHookName, ServerHookType } from '../../types/plugins/server-hook.model'
 import { isLibraryCodeValid, isPackageJSONValid } from '../../helpers/custom-validators/plugins'
 import { logger } from '../../helpers/logger'
 import { CONFIG } from '../../initializers/config'
@@ -197,7 +197,7 @@ export class PluginManager implements ServerHook {
 
   // ###################### Hooks ######################
 
-  async runHook<T> (hookName: ServerHookName, result?: T, params?: any): Promise<T> {
+  async runHook<P, U extends ServerHookName, T extends ServerHookType[U]> (hookName: U, result?: T, params?: P): Promise<T> {
     if (!this.hooks[hookName]) return Promise.resolve(result)
 
     const hookType = getHookType(hookName)

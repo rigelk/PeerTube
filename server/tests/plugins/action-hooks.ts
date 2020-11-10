@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions,@typescript-eslint/require-await */
 
 import 'mocha'
-import { ServerHookName, VideoPrivacy } from '@shared/models'
+import { ServerHookName } from '../../types/plugins'
+import { VideoPrivacy } from '@shared/models'
 import {
   addVideoCommentReply,
   addVideoCommentThread,

@@ -24,10 +24,12 @@ import {
   PluginVideoLanguageManager,
   PluginVideoLicenceManager,
   PluginVideoPrivacyManager,
-  RegisterServerHookOptions,
   RegisterServerSettingOptions
 } from '@shared/models'
-import { serverHookObject } from '@shared/models/plugins/server-hook.model'
+import {
+  RegisterServerHookOptions,
+  serverHookObject
+} from '../../types/plugins'
 import { buildPluginHelpers } from './plugin-helpers'
 
 type AlterableVideoConstant = 'language' | 'licence' | 'category' | 'privacy' | 'playlistPrivacy'
